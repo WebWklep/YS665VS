@@ -1,86 +1,79 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#ffffff">
-<title>YOUR SWEET SIX SIX FIVE — студия визуализации</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fff">
+<title>YS665VS — визуальная лаборатория</title>
 <style>
-:root{--ink:#171717;--muted:#777;--line:#dedede;--soft:#f5f5f5}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#fff;color:var(--ink);font-family:Arial,Helvetica,sans-serif}button,input,select{font:inherit}button{cursor:pointer;color:inherit}.mono{font:11px "Courier New",monospace;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
-.wrap{max-width:1500px;margin:auto;padding:0 34px}.top{height:58px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.brand{font:11px "Courier New",monospace;letter-spacing:.08em}.status{color:#333}.status:before{content:"";display:inline-block;width:7px;height:7px;background:#5c9d67;border-radius:50%;margin-right:8px}
-.hero{padding:36px 0 27px;border-bottom:1px solid var(--line);display:flex;align-items:end;justify-content:space-between;gap:20px}.hero h1{font-size:clamp(34px,5vw,64px);line-height:.9;letter-spacing:-.065em;margin:10px 0 0;font-weight:800}.hero-meta{text-align:right;line-height:1.8}
-.nav{display:flex;gap:25px;padding:15px 0;border-bottom:1px solid var(--line)}.nav a{font:11px "Courier New",monospace;color:#555;text-decoration:none}.nav a:hover{color:#000}
-.section{padding:24px 0 0}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}.section-title h2{font-size:14px;margin:0;font-weight:700}
-.studio{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(290px,.8fr);gap:18px;align-items:stretch}
-.preview{position:relative;background:#fff;border:1px solid var(--line);aspect-ratio:16/9;min-height:320px;display:grid;place-items:center;overflow:hidden}.preview-inner{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden}.preview img{display:none;max-width:100%;max-height:100%;object-fit:contain;transform-origin:center;will-change:transform}.empty{text-align:center;color:#777;padding:20px}.empty b{display:block;font-size:14px;color:#222;margin-bottom:8px}.empty span{font:11px "Courier New",monospace}.frame-label{position:absolute;z-index:2;top:13px;left:14px}.frame-count{position:absolute;z-index:2;right:14px;top:13px}.frame-bottom{position:absolute;z-index:2;left:14px;bottom:13px}
-.panel{border:1px solid var(--line);padding:18px;display:flex;flex-direction:column}.panel h3{font-size:13px;margin:0 0 14px}.upload{display:block;border:1px dashed #aaa;padding:16px;text-align:center;background:#fff;margin-bottom:16px}.upload strong{display:block;font-size:12px;margin-bottom:6px}.upload span{font:10px "Courier New",monospace;color:#777}.upload input{display:none}
-.field{margin:12px 0}.field label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:8px}.field output{font:11px "Courier New",monospace;color:#555}select{width:100%;height:36px;padding:0 9px;border:1px solid #ccc;background:white;border-radius:0;font-size:12px}input[type=range]{width:100%;accent-color:#111}
-.buttons{display:flex;gap:8px;margin-top:auto;padding-top:15px}.btn{border:1px solid #111;background:#111;color:#fff;padding:11px 13px;font:11px "Courier New",monospace;flex:1}.btn.light{background:#fff;color:#111}.btn:disabled{opacity:.35;cursor:not-allowed}
-.hint{font:10px "Courier New",monospace;color:#777;line-height:1.6;margin-top:12px}
-.recipes{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.recipe{border:1px solid var(--line);background:#fff;text-align:left;padding:13px;min-height:105px}.recipe.active{border:1px solid #111;background:#f7f7f7}.recipe small{display:block;font:10px "Courier New",monospace;color:#777;margin-bottom:17px}.recipe b{font-size:12px}.recipe p{font-size:10px;line-height:1.45;color:#777;margin:6px 0 0}
-.footer{margin-top:35px;padding:15px 0 24px;border-top:1px solid var(--line);display:flex;justify-content:space-between}
-.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,15px);background:#111;color:#fff;padding:12px 16px;font:11px "Courier New",monospace;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:850px){.wrap{padding:0 18px}.studio{grid-template-columns:1fr}.preview{min-height:0}.panel{min-height:0}.recipes{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:520px){.hero{align-items:start;flex-direction:column}.hero-meta{text-align:left}.nav{gap:16px;overflow:auto}.nav a{white-space:nowrap}.preview{aspect-ratio:4/3;min-height:230px}.footer{gap:12px;flex-direction:column}}
+:root{--ink:#171717;--muted:#858585;--line:#e7e7e7;--paper:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:2px solid #111;outline-offset:3px}
+.shell{max-width:1440px;margin:auto;padding:0 42px}.top{height:66px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.brand{font:11px "Courier New",monospace;letter-spacing:.08em}.topnote{font:10px "Courier New",monospace;color:#888;letter-spacing:.08em}
+.hero{padding:62px 0 46px}.eyebrow,.micro{font:10px "Courier New",monospace;letter-spacing:.1em;color:#888}.hero h1{font-size:clamp(30px,4vw,52px);font-weight:600;letter-spacing:-.055em;margin:13px 0 8px}.hero p{font-size:13px;color:#777;margin:0}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:12px 0 16px}.section-head h2{font-size:12px;font-weight:600;margin:0;letter-spacing:.04em}
+.modules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.module{min-height:190px;border:1px solid var(--line);padding:20px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;background:#fff;transition:border-color .2s,transform .2s}.module:hover{border-color:#999;transform:translateY(-2px)}.module .num{font:10px "Courier New",monospace;color:#999}.module strong{font-size:20px;font-weight:600;letter-spacing:-.04em;margin-top:auto}.module span:last-child{font-size:11px;color:#888;margin-top:7px}.module.disabled{opacity:.45;cursor:default}.module.disabled:hover{transform:none;border-color:var(--line)}
+.footer{margin-top:70px;padding:16px 0 24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font:10px "Courier New",monospace;color:#999}
+.view{display:none}.view.active{display:block}.back{border:0;background:none;padding:0;font:10px "Courier New",monospace;color:#777;letter-spacing:.06em;margin:34px 0 25px}.back:hover{color:#111}.workspace-head{display:flex;align-items:end;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--line)}.workspace-head h1{font-size:clamp(28px,4vw,42px);font-weight:600;letter-spacing:-.05em;margin:8px 0 0}.workspace-head p{font-size:11px;color:#888;margin:0 0 4px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;padding:17px 0}.toolbar-title{font-size:12px;font-weight:600}.toolbar-right{display:flex;gap:8px;align-items:center}
+.add{height:35px;padding:0 13px;border:1px solid #171717;background:#171717;color:white;font:10px "Courier New",monospace;letter-spacing:.05em}.add .plus{font-size:17px;vertical-align:-1px;margin-right:7px}.hidden{display:none}
+.stage{height:min(58vw,530px);min-height:330px;position:relative;overflow:hidden;background:#fff;border:1px solid var(--line);perspective:1100px;display:flex;align-items:center;justify-content:center;touch-action:pan-y}
+.stage:before{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line)}
+.stage-empty{text-align:center;color:#999;font-size:12px;line-height:1.8}.stage-empty b{display:block;color:#222;font-weight:500;font-size:15px}
+.carousel{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform-style:preserve-3d}
+.slide{position:absolute;width:min(31vw,330px);height:min(40vw,390px);max-height:78%;border:1px solid #e6e6e6;background:#f6f6f6;box-shadow:0 15px 45px rgba(0,0,0,.08);overflow:hidden;transition:transform .65s cubic-bezier(.2,.75,.2,1),opacity .5s,width .5s;backface-visibility:hidden;cursor:pointer}
+.slide img{width:100%;height:100%;object-fit:cover;display:block;user-select:none;pointer-events:none}.slide .slide-index{position:absolute;bottom:10px;left:12px;font:9px "Courier New",monospace;color:#fff;text-shadow:0 1px 5px #000}
+.stage-controls{position:absolute;z-index:5;bottom:15px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:16px}.arrow{width:34px;height:34px;border:1px solid #ddd;background:rgba(255,255,255,.9);border-radius:50%;font-size:16px}.counter{font:10px "Courier New",monospace;color:#777;min-width:55px;text-align:center}
+.render-bar{display:flex;justify-content:space-between;align-items:center;padding:16px 0 23px}.render-btn{border:0;background:#171717;color:white;padding:13px 24px;font:10px "Courier New",monospace;letter-spacing:.1em}.render-btn:disabled{opacity:.3;cursor:not-allowed}.render-note{font:10px "Courier New",monospace;color:#999}
+.library{border-top:1px solid var(--line);padding-top:16px}.library-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.library-head strong{font-size:11px;font-weight:600}.library-head span{font:10px "Courier New",monospace;color:#999}.thumbs{display:flex;gap:9px;overflow-x:auto;padding:2px 2px 12px;min-height:93px;align-items:flex-start}.thumb{position:relative;flex:0 0 82px;height:76px;border:1px solid #e5e5e5;background:#f5f5f5;padding:0;cursor:grab}.thumb img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}.thumb.active{outline:1px solid #111;outline-offset:2px}.thumb.dragging{opacity:.3}.thumb .remove{position:absolute;right:3px;top:3px;width:17px;height:17px;border:0;background:rgba(255,255,255,.9);font-size:12px;line-height:15px;padding:0}.thumb-empty{font:10px "Courier New",monospace;color:#aaa;padding:23px 0}
+.rendered{display:none;position:absolute;inset:0;background:#fff;z-index:3;align-items:center;justify-content:center}.rendered.show{display:flex}.rendered img{max-width:100%;max-height:100%;object-fit:contain;animation:appear .7s ease both}.rendered .render-label{position:absolute;top:14px;left:15px;font:9px "Courier New",monospace;color:#888}@keyframes appear{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,12px);padding:11px 15px;background:#171717;color:white;font:10px "Courier New",monospace;opacity:0;transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:760px){.shell{padding:0 18px}.hero{padding:43px 0 35px}.modules{grid-template-columns:1fr}.module{min-height:135px}.stage{height:390px;min-height:300px}.slide{width:56vw;height:68%;}.workspace-head{align-items:flex-start;flex-direction:column;gap:12px}.toolbar{gap:10px}.footer{margin-top:45px}}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header class="top"><div class="brand">YS665VS / YOUR SWEET SIX SIX FIVE</div><div class="mono status">СИСТЕМА ГОТОВА</div></header>
-<section class="hero"><div><div class="mono">ВИЗУАЛЬНОЕ ПРОИЗВОДСТВО / 001</div><h1>YOUR SWEET<br>SIX SIX FIVE.</h1></div><div class="hero-meta mono">СТУДИЯ ВИЗУАЛИЗАЦИИ<br>ВЕРСИЯ 0.02<br>2026</div></section>
-<nav class="nav"><a href="#studio">01 / СТУДИЯ</a><a href="#recipes">02 / ДВИЖЕНИЕ</a></nav>
-<section class="section" id="studio">
-<div class="section-title"><h2>01 / РАБОЧЕЕ ПОЛЕ</h2><span class="mono">ФОРМАТ КАДРА 16:9</span></div>
-<div class="studio">
-<div class="preview" id="preview">
-<span class="frame-label mono">ПРЕДПРОСМОТР</span><span class="frame-count mono">16:9</span>
-<div class="preview-inner"><div class="empty" id="empty"><b>Добавьте изображение</b><span>Выберите файл справа или перетащите его сюда</span></div><img id="image" alt="Предпросмотр загруженного изображения"></div>
-<span class="frame-bottom mono" id="filename">ИСТОЧНИК НЕ ВЫБРАН</span>
-</div>
-<aside class="panel">
-<h3>ИЗОБРАЖЕНИЕ</h3>
-<label class="upload" for="file"><strong id="filetitle">Выбрать изображение</strong><span>JPG · PNG · WEBP</span><input id="file" type="file" accept="image/*"></label>
-<h3>ПАРАМЕТРЫ ДВИЖЕНИЯ</h3>
-<div class="field"><label for="motion">Тип движения</label><select id="motion"><option value="zoom">Плавное приближение</option><option value="pan">Медленное смещение</option><option value="float">Лёгкое парение</option><option value="still">Статичный кадр</option></select></div>
-<div class="field"><label for="duration">Длительность <output id="durationOut">8 сек.</output></label><input id="duration" type="range" min="3" max="20" value="8"></div>
-<div class="field"><label for="scale">Масштаб <output id="scaleOut">110%</output></label><input id="scale" type="range" min="100" max="140" value="110"></div>
-<div class="buttons"><button class="btn" id="play" disabled>СМОТРЕТЬ</button><button class="btn light" id="stop" disabled>СТОП</button></div>
-<button class="btn light" id="download" disabled style="margin-top:8px">СОХРАНИТЬ ВИДЕО</button>
-<div class="hint" id="hint">1. Загрузите фото. 2. Выберите движение. 3. Нажмите «Смотреть». Экспорт доступен в браузерах с поддержкой записи видео.</div>
-</aside>
+<div class="shell">
+<header class="top"><div class="brand">YS665VS</div><div class="topnote">ВИЗУАЛЬНАЯ ЛАБОРАТОРИЯ</div></header>
+<main>
+<section id="home" class="view active">
+<div class="hero"><div class="eyebrow">ЛИЧНЫЙ ИНСТРУМЕНТ / 001</div><h1>YOUR SWEET SIX SIX FIVE</h1><p>Простые инструменты для создания визуальных историй.</p></div>
+<div class="section-head"><h2>РАЗДЕЛЫ</h2><span class="micro">ВЫБЕРИТЕ ИНСТРУМЕНТ</span></div>
+<div class="modules">
+<button class="module" id="open-anim"><span class="num">01 / MOTION</span><strong>Анимашка</strong><span>Фото, движение и композиция</span></button>
+<button class="module disabled" type="button"><span class="num">02 / TYPE</span><strong>Типографика</strong><span>Скоро</span></button>
+<button class="module disabled" type="button"><span class="num">03 / OBJECTS</span><strong>Объекты</strong><span>Скоро</span></button>
 </div>
 </section>
-<section class="section" id="recipes">
-<div class="section-title"><h2>02 / ГОТОВЫЕ ДВИЖЕНИЯ</h2><span class="mono">ВЫБЕРИТЕ ВАРИАНТ</span></div>
-<div class="recipes">
-<button class="recipe active" data-type="zoom"><small>М—01</small><b>ПРИБЛИЖЕНИЕ</b><p>Плавный наезд на объект.</p></button>
-<button class="recipe" data-type="pan"><small>М—02</small><b>СМЕЩЕНИЕ</b><p>Медленное движение по кадру.</p></button>
-<button class="recipe" data-type="float"><small>М—03</small><b>ПАРЕНИЕ</b><p>Едва заметное движение.</p></button>
-<button class="recipe" data-type="still"><small>М—04</small><b>СТАТИЧНЫЙ КАДР</b><p>Без движения и увеличения.</p></button>
+<section id="anim" class="view">
+<button class="back" id="back">← ВСЕ РАЗДЕЛЫ</button>
+<div class="workspace-head"><div><div class="eyebrow">РАЗДЕЛ 01 / АНИМАЦИЯ</div><h1>Анимашка</h1></div><p>ШАБЛОНЫ ДВИЖЕНИЯ И КОМПОЗИЦИИ</p></div>
+<div class="toolbar"><div class="toolbar-title">01 / ШАБЛОН — 3D КАРУСЕЛЬ</div><div class="toolbar-right"><span class="micro" id="image-total">0 ИЗОБРАЖЕНИЙ</span><button class="add" id="add"><span class="plus">＋</span>ДОБАВИТЬ ФОТО</button><input class="hidden" id="files" type="file" accept="image/*" multiple></div></div>
+<div class="stage" id="stage">
+<div class="stage-empty" id="stage-empty"><b>Пока здесь пусто</b>Добавьте несколько изображений,<br>чтобы собрать карусель.</div>
+<div class="carousel" id="carousel"></div>
+<div class="rendered" id="rendered"><span class="render-label">ПРЕДПРОСМОТР ШАБЛОНА</span><img id="render-image" alt=""></div>
+<div class="stage-controls"><button class="arrow" id="prev" aria-label="Предыдущее фото">←</button><span class="counter" id="counter">0 / 0</span><button class="arrow" id="next" aria-label="Следующее фото">→</button></div>
 </div>
+<div class="render-bar"><span class="render-note">ПЕРЕТАСКИВАЙТЕ КАРТОЧКИ НИЖЕ, ЧТОБЫ МЕНЯТЬ ПОРЯДОК</span><button class="render-btn" id="render" disabled>РЕНДЕР →</button></div>
+<div class="library"><div class="library-head"><strong>ВАША ЛЕНТА</strong><span>ПЕРЕТАСКИВАЙТЕ ДЛЯ ИЗМЕНЕНИЯ ПОРЯДКА</span></div><div class="thumbs" id="thumbs"><div class="thumb-empty">ЗАГРУЖЕННЫЕ ИЗОБРАЖЕНИЯ ПОЯВЯТСЯ ЗДЕСЬ</div></div></div>
 </section>
-<footer class="footer mono"><span>YOUR SWEET SIX SIX FIVE © 2026</span><span>СТУДИЯ / 001</span></footer>
-</div>
-<div class="toast" id="toast"></div>
+</main>
+<footer class="footer"><span>YOUR SWEET SIX SIX FIVE © 2026</span><span>YS665VS / 001</span></footer>
+</div><div class="toast" id="toast"></div>
 <script>
-const $=id=>document.getElementById(id);
-const img=$('image'),preview=$('preview'),toast=$('toast');
-let url=null,raf=0,started=0,recording=null,recordedUrl=null;
-function say(t){toast.textContent=t;toast.classList.add('show');clearTimeout(say.timer);say.timer=setTimeout(()=>toast.classList.remove('show'),2000)}
-function stop(){cancelAnimationFrame(raf);raf=0;img.style.transform='none';$('stop').disabled=true}
-function choose(file){if(!file||!file.type.startsWith('image/')){say('НУЖЕН ФАЙЛ ИЗОБРАЖЕНИЯ');return}if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(file);img.onload=()=>{img.style.display='block';$('empty').style.display='none';$('filetitle').textContent=file.name;$('filename').textContent=file.name.toUpperCase().slice(0,36);$('play').disabled=false;$('download').disabled=false;stop();say('ИЗОБРАЖЕНИЕ ДОБАВЛЕНО')};img.src=url}
-$('file').addEventListener('change',e=>choose(e.target.files[0]));
-preview.addEventListener('dragover',e=>{e.preventDefault();preview.style.outline='2px solid #111'});
-preview.addEventListener('dragleave',()=>preview.style.outline='');
-preview.addEventListener('drop',e=>{e.preventDefault();preview.style.outline='';choose(e.dataTransfer.files[0])});
-$('duration').addEventListener('input',e=>$('durationOut').textContent=e.target.value+' сек.');
-$('scale').addEventListener('input',e=>$('scaleOut').textContent=e.target.value+'%');
-$('motion').addEventListener('change',()=>{document.querySelectorAll('.recipe').forEach(b=>b.classList.toggle('active',b.dataset.type===$('motion').value))});
-document.querySelectorAll('.recipe').forEach(b=>b.addEventListener('click',()=>{$('motion').value=b.dataset.type;$('motion').dispatchEvent(new Event('change'));say('ВЫБРАНО: '+b.querySelector('b').textContent)}));
-$('play').addEventListener('click',()=>{if(!img.src)return;stop();const type=$('motion').value,seconds=+$('duration').value,scale=+$('scale').value/100;started=performance.now();$('stop').disabled=false;function frame(now){const p=Math.min((now-started)/(seconds*1000),1),ease=p*p*(3-2*p);let transform='';if(type==='zoom')transform='scale('+(1+(scale-1)*ease)+')';if(type==='pan')transform='scale('+scale+') translate('+(p*3-1.5)+'%, 0)';if(type==='float')transform='scale('+(1+(scale-1)*.35)+') translateY('+(Math.sin(p*Math.PI*2)*1.1)+'%)';img.style.transform=transform;if(p<1)raf=requestAnimationFrame(frame);else{$('stop').disabled=true;raf=0}}raf=requestAnimationFrame(frame)});
-$('stop').addEventListener('click',()=>{stop();say('ПРЕДПРОСМОТР ОСТАНОВЛЕН')});
-$('download').addEventListener('click',async()=>{if(!img.src)return;const canvas=document.createElement('canvas');canvas.width=1280;canvas.height=720;const ctx=canvas.getContext('2d');const stream=canvas.captureStream(30);let mime=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));if(!window.MediaRecorder||!mime){say('ЗАПИСЬ ВИДЕО НЕ ПОДДЕРЖИВАЕТСЯ ЭТИМ БРАУЗЕРОМ');return}const chunks=[];try{recording=new MediaRecorder(stream,{mimeType:mime});recording.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};recording.onstop=()=>{const blob=new Blob(chunks,{type:mime});if(recordedUrl)URL.revokeObjectURL(recordedUrl);recordedUrl=URL.createObjectURL(blob);const a=document.createElement('a');a.href=recordedUrl;a.download='ys665vs-video.webm';a.click();say('ВИДЕО СОХРАНЕНО');stream.getTracks().forEach(t=>t.stop())};recording.start();const seconds=+$('duration').value,type=$('motion').value,scale=+$('scale').value/100,start=performance.now();function draw(now){const p=Math.min((now-start)/(seconds*1000),1),ease=p*p*(3-2*p);ctx.fillStyle='#fff';ctx.fillRect(0,0,1280,720);const iw=img.naturalWidth,ih=img.naturalHeight,fit=Math.min(1280/iw,720/ih),s=fit*(type==='still'?1:(type==='float'?1+(scale-1)*.35:1+(scale-1)*ease));let x=(1280-iw*s)/2,y=(720-ih*s)/2;if(type==='pan')x+=(p*3-1.5)*12;if(type==='float')y+=Math.sin(p*Math.PI*2)*8;ctx.drawImage(img,x,y,iw*s,ih*s);if(p<1)requestAnimationFrame(draw);else setTimeout(()=>recording&&recording.state!=='inactive'&&recording.stop(),250)}requestAnimationFrame(draw);say('ИДЁТ ЗАПИСЬ ВИДЕО…')}catch(e){say('НЕ УДАЛОСЬ СОЗДАТЬ ВИДЕО');stream.getTracks().forEach(t=>t.stop())}});
+const $=id=>document.getElementById(id);let items=[],active=0,dragIndex=null,autoTimer=null,renderMode=false;
+function notify(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(notify.timer);notify.timer=setTimeout(()=>$('toast').classList.remove('show'),1800)}
+function show(view){$('home').classList.toggle('active',view==='home');$('anim').classList.toggle('active',view==='anim');if(view==='home')stopAuto()}
+$('open-anim').onclick=()=>show('anim');$('back').onclick=()=>{show('home');$('rendered').classList.remove('show');renderMode=false};
+$('add').onclick=()=>$('files').click();
+$('files').addEventListener('change',e=>{const incoming=[...e.target.files].filter(f=>f.type.startsWith('image/'));if(!incoming.length)return;incoming.forEach(file=>items.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()),name:file.name,url:URL.createObjectURL(file)}));active=items.length-incoming.length;renderAll();notify('ДОБАВЛЕНО: '+incoming.length);e.target.value=''});
+function renderAll(){drawCarousel();drawThumbs();$('image-total').textContent=items.length+' ИЗОБРАЖЕНИЙ';$('render').disabled=!items.length;$('stage-empty').style.display=items.length?'none':'block';$('counter').textContent=items.length?(active+1)+' / '+items.length:'0 / 0';if(renderMode&&items.length)showRendered()}
+function drawCarousel(){const root=$('carousel');root.innerHTML='';if(!items.length)return;items.forEach((item,i)=>{const delta=i-active;const card=document.createElement('div');card.className='slide';const img=document.createElement('img');img.src=item.url;img.alt=item.name;card.appendChild(img);const label=document.createElement('span');label.className='slide-index';label.textContent=String(i+1).padStart(2,'0');card.appendChild(label);const d=Math.abs(delta);let x=delta*190,z=-d*115,rot=delta* -34,scale=Math.max(.68,1-d*.12),opacity=d>3?0:1-d*.17;card.style.transform='translateX('+x+'px) translateZ('+z+'px) rotateY('+rot+'deg) scale('+scale+')';card.style.opacity=opacity;card.style.zIndex=20-d;card.style.pointerEvents=d>2?'none':'auto';card.onclick=()=>{active=i;renderAll()};root.appendChild(card)})}
+function drawThumbs(){const root=$('thumbs');root.innerHTML='';if(!items.length){root.innerHTML='<div class="thumb-empty">ЗАГРУЖЕННЫЕ ИЗОБРАЖЕНИЯ ПОЯВЯТСЯ ЗДЕСЬ</div>';return}items.forEach((item,i)=>{const b=document.createElement('button');b.className='thumb'+(i===active?' active':'');b.draggable=true;b.title=item.name;b.dataset.index=i;const im=document.createElement('img');im.src=item.url;b.appendChild(im);const rm=document.createElement('span');rm.className='remove';rm.textContent='×';rm.onclick=e=>{e.stopPropagation();URL.revokeObjectURL(items[i].url);items.splice(i,1);if(active>=items.length)active=Math.max(0,items.length-1);renderAll()};b.appendChild(rm);b.onclick=()=>{active=i;renderMode=false;$('rendered').classList.remove('show');renderAll()};b.addEventListener('dragstart',e=>{dragIndex=i;b.classList.add('dragging');e.dataTransfer.effectAllowed='move'});b.addEventListener('dragend',()=>{dragIndex=null;b.classList.remove('dragging')});b.addEventListener('dragover',e=>e.preventDefault());b.addEventListener('drop',e=>{e.preventDefault();const target=Number(b.dataset.index);if(dragIndex===null||dragIndex===target)return;const moved=items.splice(dragIndex,1)[0];items.splice(target,0,moved);if(active===dragIndex)active=target;else if(dragIndex<active&&target>=active)active--;else if(dragIndex>active&&target<=active)active++;renderAll()});root.appendChild(b)})}
+function move(step){if(!items.length)return;active=(active+step+items.length)%items.length;renderMode=false;$('rendered').classList.remove('show');renderAll()}
+$('prev').onclick=()=>move(-1);$('next').onclick=()=>move(1);
+function showRendered(){if(!items.length)return;$('render-image').src=items[active].url;$('rendered').classList.add('show');renderMode=true}
+$('render').onclick=()=>{if(!items.length)return;showRendered();notify('ШАБЛОН СОБРАН — ЛИСТАЙТЕ ФОТО')};
+function stopAuto(){clearInterval(autoTimer);autoTimer=null}
+$('stage').addEventListener('dblclick',()=>{if(renderMode){renderMode=false;$('rendered').classList.remove('show')}});$('rendered').addEventListener('click',()=>{renderMode=false;$('rendered').classList.remove('show')});
+let startX=0;$('stage').addEventListener('touchstart',e=>{startX=e.touches[0].clientX},{passive:true});$('stage').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>45)move(dx<0?1:-1)},{passive:true});
+document.addEventListener('keydown',e=>{if(!$('anim').classList.contains('active'))return;if(e.key==='ArrowRight')move(1);if(e.key==='ArrowLeft')move(-1)});
 </script>
-</body>
-</html>
+</body></html>
