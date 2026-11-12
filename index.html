@@ -64,7 +64,7 @@ function selectEditorialText(id){selectedText=id;const o=editorialObjects.find(x
 function updateSelected(fn){const o=editorialObjects.find(x=>x.id===selectedText);if(!o)return;fn(o);renderEditorialText();selectEditorialText(o.id)}
 $('editorial-upload').onclick=()=>$('editorial-files').click();$('editorial-files').onchange=e=>{[...e.target.files].filter(f=>f.type.startsWith('image/')).forEach(f=>items.push({url:URL.createObjectURL(f)}));if(items.length){editorialImage=items.length-1;setEditorialImage(editorialImage);draw()}e.target.value='';renderEditorialAssets()};
 $('add-headline').onclick=()=>addEditorialText('headline');$('add-caption').onclick=()=>addEditorialText('caption');
-$('text-content').oninput=e=>updateSelected(o=>o.text=e.target.value);$('font-choice').onchange=e=>updateSelected(o=>o.font=e.target.value);
+$('text-content').oninput=e=>{const o=editorialObjects.find(x=>x.id===selectedText);if(!o)return;o.text=e.target.value;renderEditorialText()};$('font-choice').onchange=e=>updateSelected(o=>o.font=e.target.value);
 $('style-regular').onclick=()=>updateSelected(o=>{o.weight=400;o.italic=false});
 $('style-bold').onclick=()=>updateSelected(o=>{o.weight=700;o.italic=false});
 $('style-italic').onclick=()=>updateSelected(o=>{o.italic=true;o.weight=400});
