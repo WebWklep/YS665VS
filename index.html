@@ -75,7 +75,45 @@ let pickColorMode=false;
 $('eyedropper').onclick=async()=>{const o=editorialObjects.find(x=>x.id===selectedText);if(!o)return;if(window.EyeDropper){try{const result=await new EyeDropper().open();updateSelected(x=>x.color=result.sRGBHex);return}catch(e){}}pickColorMode=!pickColorMode;$('eyedropper').textContent=pickColorMode?'CLICK IMAGE…':'PICK FROM CANVAS';edCanvas.style.cursor=pickColorMode?'crosshair':'default';};
 edCanvas.addEventListener('click',e=>{if(!pickColorMode)return;const o=editorialObjects.find(x=>x.id===selectedText),im=edCanvas.querySelector('.canvas-image');if(!o||!im||!im.complete||!im.naturalWidth)return;const r=edCanvas.getBoundingClientRect(),scale=Math.max(r.width/im.naturalWidth,r.height/im.naturalHeight),dw=im.naturalWidth*scale,dh=im.naturalHeight*scale,ox=(r.width-dw)/2,oy=(r.height-dh)/2,px=Math.max(0,Math.min(im.naturalWidth-1,Math.floor((e.clientX-r.left-ox)/scale))),py=Math.max(0,Math.min(im.naturalHeight-1,Math.floor((e.clientY-r.top-oy)/scale)));try{const cv=document.createElement('canvas');cv.width=im.naturalWidth;cv.height=im.naturalHeight;const cx=cv.getContext('2d',{willReadFrequently:true});cx.drawImage(im,0,0);const d=cx.getImageData(px,py,1,1).data,hex='#'+[d[0],d[1],d[2]].map(v=>v.toString(16).padStart(2,'0')).join('');updateSelected(x=>x.color=hex);$('text-color').value=hex;pickColorMode=false;$('eyedropper').textContent='PICK FROM CANVAS';edCanvas.style.cursor='default'}catch(err){pickColorMode=false;$('eyedropper').textContent='PICK FROM CANVAS';edCanvas.style.cursor='default'}});
 
-function renderLayerStack(){const strip=$('layer-strip');if(!strip)return;const add=strip.querySelector('.layer-add');strip.querySelectorAll('.layer-chip').forEach(n=>n.remove());layerOrder.forEach(name=>{const b=document.createElement('button');b.className='layer-chip'+(name==='carousel'?' active':'');b.textContent=name==='carousel'?'#CAROUSEL':'#TYPE';b.draggable=true;b.dataset.layer=name;b.onclick=()=>{if(name==='type'){show('editorial-view');renderEditorialAssets()}};b.ondragstart=()=>{draggedLayer=name;b.classList.add('dragging')};b.ondragend=()=>{draggedLayer=null;b.classList.remove('dragging')};b.ondragover=e=>e.preventDefault();b.ondrop=e=>{e.preventDefault();const target=name;if(!draggedLayer||draggedLayer===target)return;layerOrder=layerOrder.filter(x=>x!==draggedLayer);layerOrder.splice(layerOrder.indexOf(target),0,draggedLayer);$('carousel-type-overlay').style.zIndex=layerOrder.indexOf('type')>layerOrder.indexOf('carousel')?'30':'0';renderLayerStack()};strip.insertBefore(b,add)}}
+function renderLayerStack() {
+  const strip = $('layer-strip');
+  if (!strip) return;
+  const add = strip.querySelector('.layer-add');
+  strip.querySelectorAll('.layer-chip').forEach(node => node.remove());
+  layerOrder.forEach(name => {
+    const button = document.createElement('button');
+    button.className = 'layer-chip' + (name === 'carousel' ? ' active' : '');
+    button.textContent = name === 'carousel' ? '#CAROUSEL' : '#TYPE';
+    button.draggable = true;
+    button.dataset.layer = name;
+    button.onclick = () => {
+      if (name === 'type') {
+        show('editorial-view');
+        renderEditorialAssets();
+      }
+    };
+    button.ondragstart = () => {
+      draggedLayer = name;
+      button.classList.add('dragging');
+    };
+    button.ondragend = () => {
+      draggedLayer = null;
+      button.classList.remove('dragging');
+    };
+    button.ondragover = event => event.preventDefault();
+    button.ondrop = event => {
+      event.preventDefault();
+      const target = name;
+      if (!draggedLayer || draggedLayer === target) return;
+      layerOrder = layerOrder.filter(item => item !== draggedLayer);
+      layerOrder.splice(layerOrder.indexOf(target), 0, draggedLayer);
+      const typeIsAbove = layerOrder.indexOf('type') > layerOrder.indexOf('carousel');
+      $('carousel-type-overlay').style.zIndex = typeIsAbove ? '30' : '0';
+      renderLayerStack();
+    };
+    strip.insertBefore(button, add);
+  });
+}
 $('layer-add').onclick=()=>{show('editorial-view');if(!editorialObjects.length)addEditorialText('headline');renderEditorialAssets()};renderLayerStack();
 function move(n){if(items.length){active=(active+n+items.length)%items.length;draw()}}$('prev').onclick=()=>move(-1);$('next').onclick=()=>move(1);const ratio=$('ratio'),orientation=$('orientation');function setRatio(v){ratio.value=v;const er=$('ed-ratio');if(er)er.value=v;const [rw,rh]=v.split('/').map(Number);const stage=$('stage');const available=stage.parentElement.clientWidth;if(!available){orientation.querySelector('.orientation-icon').textContent=rw<rh?'▯':'▭';return}const h=Math.min(480,window.innerHeight*.72);const w=Math.min(available,h*rw/rh);stage.style.width=w+'px';stage.style.height=(w*rh/rw)+'px';stage.style.aspectRatio=rw+'/'+rh;const ec=$('editorial-canvas');if(ec)ec.style.aspectRatio=rw+'/'+rh;const eo=$('ed-orientation');if(eo)eo.querySelector('.orientation-icon').textContent=rw<rh?'▯':'▭';orientation.querySelector('.orientation-icon').textContent=rw<rh?'▯':'▭';draw()}ratio.onchange=()=>setRatio(ratio.value);$('ed-ratio').onchange=()=>setRatio($('ed-ratio').value);$('ed-orientation').onclick=()=>{let [w,h]=$('ed-ratio').value.split('/').map(Number);let next=`${h}/${w}`;if(![...$('ed-ratio').options].some(o=>o.value===next))next=w<h?'16/9':'9/16';setRatio(next)};orientation.onclick=()=>{let [w,h]=ratio.value.split('/').map(Number);let next=w<h?`${h}/${w}`:`${h}/${w}`;if(![...ratio.options].some(o=>o.value===next)){next='9/16'}setRatio(next)};setRatio('16/9');window.addEventListener('resize',()=>setRatio(ratio.value));let sx=0;$('stage').addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});$('stage').addEventListener('touchend',e=>{let d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>45)move(d<0?1:-1)},{passive:true});document.addEventListener('keydown',e=>{if($('carousel-view').classList.contains('active')){if(e.key==='ArrowRight')move(1);if(e.key==='ArrowLeft')move(-1)}});
 </script></body></html>
