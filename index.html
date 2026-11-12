@@ -54,7 +54,7 @@
 <section id="carousel-view" class="view"><nav class="path" aria-label="Путь"><button id="crumb-home-2">MOTION LIBRARY</button><span class="sep">/</span><button class="current" disabled>COVERFLOW / 001</button></nav>
 <div class="template-header"><div><div class="editorial-meta">MOTION TEMPLATE / 001</div><h2 class="template-title">COVERFLOW</h2><p class="template-subtitle">A manual study of depth, sequence and perspective.</p></div><div class="template-code">MANUAL<br>3D / STILL</div></div>
 <div class="stage square-mode empty-state" id="stage"><div class="empty" id="empty">ADD IMAGES TO BEGIN</div><div class="carousel" id="carousel" aria-hidden="true"></div><canvas id="three-stage" aria-label="Interactive 3D photo carousel"></canvas><div class="carousel-type-overlay" id="carousel-type-overlay"></div></div>
-<div class="preview-bar"><div class="controls"><button class="small-action" id="add" aria-label="Добавить фотографии">+ ADD IMAGES</button><input id="files" type="file" accept="image/*" multiple hidden><button class="arrow" id="prev" aria-label="Предыдущее фото">←</button><span class="count" id="count">0 / 0</span><button class="arrow" id="next" aria-label="Следующее фото">→</button></div><div class="ratio-tools"><span class="editorial-meta">FRAME</span><select id="ratio" aria-label="Соотношение сторон"><option value="1/1">1:1</option><option value="16/9">16:9</option><option value="9/16">9:16</option><option value="4/5">4:5</option><option value="5/4">5:4</option><option value="3/2">3:2</option><option value="2/3">2:3</option></select></div></div>
+<div class="preview-bar"><div class="controls"><button class="small-action" id="add" aria-label="Добавить фотографии">+ ADD IMAGES</button><input id="files" type="file" accept="image/*" multiple hidden><button class="arrow" id="prev" aria-label="Предыдущее фото">←</button><span class="count" id="count">0 / 0</span><button class="arrow" id="next" aria-label="Следующее фото">→</button></div><div class="ratio-tools"><span class="editorial-meta">FRAME</span><select id="ratio" aria-label="Соотношение сторон"><option value="1/1">1:1</option></select></div></div>
 <div class="interaction-note"><span>← →</span> ARROW KEYS <i></i><span>DRAG</span> MOVE THROUGH IMAGES <i></i><span>CLICK</span> SELECT FRAME</div>
 <div class="library"><div class="library-title">IMAGE SEQUENCE <span id="sequence-count">00</span></div><div class="thumbs" id="thumbs"></div></div><div hidden><button id="crop-square"></button><button id="crop-original"></button><button id="ratio-lock"></button><button id="orientation"></button><div id="layer-strip"><button id="layer-add"></button></div></div></section>
 <section id="editorial-view" class="view" hidden>
@@ -67,12 +67,12 @@
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
 const $=id=>document.getElementById(id);let items=[],active=0,drag=null;function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id))}$('open').onclick=()=>{show('carousel-view');setRatio(ratio.value)};$('template').onclick=()=>{show('carousel-view');setRatio(ratio.value)};$('crumb-home').onclick=$('crumb-home-2').onclick=()=>show('home');$('add').onclick=()=>$('files').click();$('files').onchange=async e=>{await importAssets(e.target.files,false);e.target.value=''};
 let imageMode='square',draggedIndex=null,pointerDrag=null,stagePointer=null,suppressSlideClick=false;
-let threeRenderer=null,threeScene=null,threeCamera=null,threeGroup=null,threeMeshes=[],threeTextures=[],threeReady=false;
+let threeRenderer=null,threeScene=null,threeCamera=null,threeGroup=null,threeMeshes=[],threeTextures=[],threeReady=false,threeGeneration=0;
 const threeCanvas=$('three-stage');
 function initThree(){
  if(threeReady)return;
  threeScene=new THREE.Scene();threeScene.background=new THREE.Color(0xf3f2ef);
- threeCamera=new THREE.PerspectiveCamera(34,1,.1,100);threeCamera.position.set(0,0,10.8);
+ threeCamera=new THREE.PerspectiveCamera(34,1,.1,100);threeCamera.position.set(0,0,11.5);
  threeRenderer=new THREE.WebGLRenderer({canvas:threeCanvas,antialias:true,alpha:false,powerPreference:'high-performance'});
  threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));threeRenderer.outputColorSpace=THREE.SRGBColorSpace;
  threeRenderer.toneMapping=THREE.ACESFilmicToneMapping;threeRenderer.toneMappingExposure=1.12;
@@ -83,27 +83,27 @@ function initThree(){
 }
 function resizeThree(){if(!threeReady)return;const r=$('stage').getBoundingClientRect();threeRenderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);threeCamera.aspect=Math.max(1,r.width)/Math.max(1,r.height);threeCamera.updateProjectionMatrix();}
 function animateThree(){if(!threeReady)return;requestAnimationFrame(animateThree);threeRenderer.render(threeScene,threeCamera);}
-function clearThreeMeshes(){threeMeshes.forEach(m=>{threeGroup.remove(m);m.geometry.dispose();if(Array.isArray(m.material))m.material.forEach(x=>x.dispose());else m.material.dispose()});threeMeshes=[];threeTextures.forEach(t=>t.dispose());threeTextures=[];}
+function clearThreeMeshes(){threeGeneration++;threeMeshes.forEach(m=>{threeGroup.remove(m);m.geometry.dispose();if(Array.isArray(m.material))m.material.forEach(x=>x.dispose());else m.material.dispose()});threeMeshes=[];threeTextures.forEach(t=>t.dispose());threeTextures=[];}
 function renderThreeScene(){
  initThree();clearThreeMeshes();
  if(!items.length){$('empty').style.display='block';return}
  $('empty').style.display='none';
- const loader=new THREE.TextureLoader();
+ const loader=new THREE.TextureLoader(),generation=threeGeneration;
  items.forEach((item,i)=>{
   const texture=loader.load(item.url);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=threeRenderer.capabilities.getMaxAnisotropy();threeTextures.push(texture);
-  const img=new Image();img.onload=()=>{
-   const aspect=img.naturalWidth/img.naturalHeight;const cardH=aspect>1?2.75/Math.min(aspect,1.8):2.75;const cardW=cardH*aspect;
+  const img=new Image();img.onload=()=>{if(generation!==threeGeneration)return;
+   const aspect=img.naturalWidth/img.naturalHeight;const cardH=aspect>1?4.15/Math.min(aspect,1.8):4.15;const cardW=cardH*aspect;
    const geometry=new THREE.BoxGeometry(cardW,cardH,.07);
    const side=new THREE.MeshStandardMaterial({color:0x252525,roughness:.82});
    const front=new THREE.MeshBasicMaterial({map:texture});
    const back=new THREE.MeshStandardMaterial({color:0xe8e5df,roughness:.9});
    const mesh=new THREE.Mesh(geometry,[side,side,side,side,front,back]);
-   const d=i-active,abs=Math.abs(d);mesh.position.set(d*2.05,0,-abs*.72);mesh.rotation.y=-d*.48;mesh.scale.setScalar(Math.max(.68,1-abs*.105));mesh.userData.index=i;threeGroup.add(mesh);threeMeshes.push(mesh);
+   const d=i-active,abs=Math.abs(d);mesh.position.set(d*2.55,0,.35-abs*1.15);mesh.rotation.y=-d*.55;mesh.scale.setScalar(Math.max(.62,1-abs*.12));mesh.userData.index=i;threeGroup.add(mesh);threeMeshes.push(mesh);
    const edge=new THREE.LineSegments(new THREE.EdgesGeometry(geometry),new THREE.LineBasicMaterial({color:0x55534f,transparent:true,opacity:.35}));
    edge.position.copy(mesh.position);edge.rotation.copy(mesh.rotation);edge.scale.copy(mesh.scale);threeGroup.add(edge);threeMeshes.push(edge);
   };img.src=item.url;
  });
- threeCamera.position.set(0,0,10.8);threeCamera.lookAt(0,0,0);
+ threeCamera.position.set(0,0,11.5);threeCamera.lookAt(0,0,0);
 }
 
 function setImageMode(mode){imageMode=mode;$('stage').classList.toggle('square-mode',mode==='square');$('stage').classList.toggle('original-mode',mode==='original');$('crop-square').classList.toggle('active',mode==='square');$('crop-original').classList.toggle('active',mode==='original');draw()}
