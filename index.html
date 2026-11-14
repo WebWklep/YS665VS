@@ -87,7 +87,7 @@ function initThree(){
 }
 function resizeThree(){if(!threeReady)return;const r=$('stage').getBoundingClientRect();threeRenderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);threeCamera.aspect=Math.max(1,r.width)/Math.max(1,r.height);threeCamera.updateProjectionMatrix();}
 function animateThree(now=0){if(!threeReady)return;requestAnimationFrame(animateThree);const dt=lastAnimationTime?Math.min(.05,(now-lastAnimationTime)/1000):1/60;lastAnimationTime=now;const ease=1-Math.exp(-7.5*dt);threeMeshes.forEach(m=>{if(m.userData.targetPosition){m.position.lerp(m.userData.targetPosition,ease);m.rotation.y+=(m.userData.targetRotationY-m.rotation.y)*ease;m.rotation.z+=(m.userData.targetRotationZ-m.rotation.z)*ease;}});threeRenderer.render(threeScene,threeCamera);}
-function clearThreeMeshes(){threeGeneration++;threeMeshes.forEach(m=>{threeGroup.remove(m);m.geometry.dispose();if(Array.isArray(m.material))m.material.forEach(x=>x.dispose());else m.material.dispose()});threeMeshes=[];threeTextures.forEach(t=>t.dispose());threeTextures=[];}
+function clearThreeMeshes(){threeGeneration++;threeMeshes.forEach(m=>{threeGroup.remove(m);m.traverse(child=>{if(child!==m&&child.geometry)child.geometry.dispose();if(child!==m&&child.material){if(Array.isArray(child.material))child.material.forEach(x=>x.dispose());else child.material.dispose();}});m.geometry.dispose();if(Array.isArray(m.material))m.material.forEach(x=>x.dispose());else m.material.dispose()});threeMeshes=[];threeTextures.forEach(t=>t.dispose());threeTextures=[];}
 function renderThreeScene(){
  initThree();clearThreeMeshes();
  if(!items.length){$('empty').style.display='block';return}
