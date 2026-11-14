@@ -56,7 +56,7 @@
 <div class="stage square-mode empty-state" id="stage"><div class="empty" id="empty">ADD IMAGES TO BEGIN</div><div class="carousel" id="carousel" aria-hidden="true"></div><canvas id="three-stage" aria-label="Interactive 3D photo carousel"></canvas><div class="carousel-type-overlay" id="carousel-type-overlay"></div></div>
 <div class="preview-bar"><div class="controls"><button class="small-action" id="add" aria-label="Добавить фотографии">+ ADD IMAGES</button><input id="files" type="file" accept="image/*" multiple hidden><button class="arrow" id="prev" aria-label="Предыдущее фото">←</button><span class="count" id="count">0 / 0</span><button class="arrow" id="next" aria-label="Следующее фото">→</button></div><div class="ratio-tools"><span class="editorial-meta">FRAME</span><select id="ratio" aria-label="Соотношение сторон"><option value="1/1">1:1</option><option value="16/9">16:9</option><option value="9/16">9:16</option><option value="4/5">4:5</option><option value="3/2">3:2</option><option value="2/3">2:3</option></select></div></div>
 <div class="motion-tools">
-<div class="motion-group"><span class="editorial-meta">MOTION</span><button class="small-action" id="play-motion">▶ PLAY</button><select id="motion-speed" aria-label="Скорость анимации"><option value="1">1×</option><option value="0.7">0.7×</option><option value="1.4">1.4×</option></select></div>
+<div class="motion-group"><span class="editorial-meta">MOTION</span><div class="menu-anchor"><button class="small-action" id="carousel-menu-toggle" aria-haspopup="true" aria-expanded="false">CAROUSEL ▾</button><div class="editor-menu" id="carousel-menu"><button data-carousel-mode="coverflow">01 / COVERFLOW</button><button data-carousel-mode="fan">02 / FAN</button><button data-carousel-mode="stack">03 / STACK</button><button data-carousel-mode="orbit">04 / ORBIT</button><button data-carousel-mode="grid">05 / GRID</button></div></div><button class="small-action" id="play-motion">▶ PLAY</button><select id="motion-speed" aria-label="Скорость анимации"><option value="1">1×</option><option value="0.7">0.7×</option><option value="1.4">1.4×</option></select></div>
 <div class="motion-group"><span class="editorial-meta">BACKGROUND</span><input id="scene-background" type="color" value="#f3f2ef" aria-label="Цвет фона"><button class="small-action" id="background-image-button">+ IMAGE</button><input id="background-image-file" type="file" accept="image/*" hidden><button class="small-action" id="background-clear">RESET</button></div>
 <div class="motion-group"><span class="editorial-meta">OUTPUT</span><select id="export-size" aria-label="Разрешение экспорта"><option value="1080">1080P</option><option value="2160">2K</option><option value="3840" selected>4K</option></select><select id="export-duration" aria-label="Длительность"><option value="5">5 SEC</option><option value="10" selected>10 SEC</option><option value="20">20 SEC</option><option value="30">30 SEC</option><option value="60">60 SEC</option></select><select id="export-fps" aria-label="Частота кадров"><option value="30" selected>30 FPS</option><option value="60">60 FPS</option></select><button class="small-action" id="export-video">EXPORT MP4 ↗</button><button class="small-action" id="export-png">PNG SEQUENCE ↗</button></div></div><div class="interaction-note"><span>← →</span> ARROW KEYS <i></i><span>DRAG</span> MOVE THROUGH IMAGES <i></i><span>CLICK</span> SELECT FRAME</div>
 <div class="library"><div class="library-title">IMAGE SEQUENCE <span id="sequence-count">00</span></div><div class="thumbs" id="thumbs"></div></div><div hidden><button id="crop-square"></button><button id="crop-original"></button><button id="ratio-lock"></button><button id="orientation"></button><div id="layer-strip"><button id="layer-add"></button></div></div></section>
@@ -71,7 +71,7 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
 import JSZip from "https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm";
 const $=id=>document.getElementById(id);let items=[],active=0,drag=null;function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id))}$('open').onclick=()=>{show('carousel-view');setRatio(ratio.value)};$('template').onclick=()=>{show('carousel-view');setRatio(ratio.value)};$('crumb-home').onclick=$('crumb-home-2').onclick=()=>show('home');$('add').onclick=()=>$('files').click();$('files').onchange=async e=>{await importAssets(e.target.files,false);e.target.value=''};
 let imageMode='square',draggedIndex=null,pointerDrag=null,stagePointer=null,suppressSlideClick=false;
-let threeRenderer=null,threeScene=null,threeCamera=null,threeGroup=null,threeMeshes=[],threeTextures=[],threeReady=false,threeGeneration=0;
+let threeRenderer=null,threeScene=null,threeCamera=null,threeGroup=null,threeMeshes=[],threeTextures=[],threeReady=false,threeGeneration=0,carouselMode="coverflow",lastAnimationTime=0;
 const threeCanvas=$('three-stage');
 function initThree(){
  if(threeReady)return;
@@ -86,7 +86,7 @@ function initThree(){
  threeReady=true;resizeThree();animateThree();
 }
 function resizeThree(){if(!threeReady)return;const r=$('stage').getBoundingClientRect();threeRenderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);threeCamera.aspect=Math.max(1,r.width)/Math.max(1,r.height);threeCamera.updateProjectionMatrix();}
-function animateThree(){if(!threeReady)return;requestAnimationFrame(animateThree);threeMeshes.forEach(m=>{if(m.userData.targetPosition){m.position.lerp(m.userData.targetPosition,.11);m.rotation.y+=(m.userData.targetRotationY-m.rotation.y)*.11;}});threeRenderer.render(threeScene,threeCamera);}
+function animateThree(now=0){if(!threeReady)return;requestAnimationFrame(animateThree);const dt=lastAnimationTime?Math.min(.05,(now-lastAnimationTime)/1000):1/60;lastAnimationTime=now;const ease=1-Math.exp(-7.5*dt);threeMeshes.forEach(m=>{if(m.userData.targetPosition){m.position.lerp(m.userData.targetPosition,ease);m.rotation.y+=(m.userData.targetRotationY-m.rotation.y)*ease;m.rotation.z+=(m.userData.targetRotationZ-m.rotation.z)*ease;}});threeRenderer.render(threeScene,threeCamera);}
 function clearThreeMeshes(){threeGeneration++;threeMeshes.forEach(m=>{threeGroup.remove(m);m.geometry.dispose();if(Array.isArray(m.material))m.material.forEach(x=>x.dispose());else m.material.dispose()});threeMeshes=[];threeTextures.forEach(t=>t.dispose());threeTextures=[];}
 function renderThreeScene(){
  initThree();clearThreeMeshes();
@@ -102,12 +102,18 @@ function renderThreeScene(){
    const front=new THREE.MeshBasicMaterial({map:texture});
    const back=new THREE.MeshStandardMaterial({color:0xe8e5df,roughness:.9});
    const mesh=new THREE.Mesh(geometry,[side,side,side,side,front,back]);
-   const d=i-active,abs=Math.abs(d),target=new THREE.Vector3(d*2.55,0,.35-abs*1.15);mesh.position.set(target.x+(d===0?0:(d>0?1.1:-1.1)),0,target.z-.65);mesh.rotation.y=-d*.55+(d===0?0:(d>0?.12:-.12));mesh.userData.index=i;mesh.userData.targetPosition=target;mesh.userData.targetRotationY=-d*.55;mesh.scale.setScalar(Math.max(.62,1-abs*.12));threeGroup.add(mesh);threeMeshes.push(mesh);
-   const edge=new THREE.LineSegments(new THREE.EdgesGeometry(geometry),new THREE.LineBasicMaterial({color:0x55534f,transparent:true,opacity:.35}));
-   edge.position.copy(mesh.position);edge.rotation.copy(mesh.rotation);edge.scale.copy(mesh.scale);threeGroup.add(edge);threeMeshes.push(edge);
+   const d=i-active,abs=Math.abs(d);let target=new THREE.Vector3(),ry=0,rz=0,scale=1,startOffset=0;
+   if(carouselMode==="coverflow"){target.set(d*2.45,0,.4-abs*.95);ry=-d*.42;scale=Math.max(.64,1-abs*.1);startOffset=d===0?0:(d>0?.72:-.72);}
+   else if(carouselMode==="fan"){const a=Math.max(-1.25,Math.min(1.25,d*.19));target.set(Math.sin(a)*4.5,0,1.1-abs*.2);ry=-a*.72;rz=-a*.34;scale=Math.max(.68,1-abs*.045);startOffset=Math.sign(d)*.45;}
+   else if(carouselMode==="stack"){target.set(d*.58,-abs*.055,.25-abs*.22);ry=-d*.045;rz=-d*.025;scale=Math.max(.7,1-abs*.025);startOffset=Math.sign(d)*.28;}
+   else if(carouselMode==="orbit"){if(d===0){target.set(0,0,1.15);}else{const a=d*.68;target.set(Math.sin(a)*3.65,Math.cos(a)*1.65,-.35+Math.cos(a)*.75);ry=-a*.28;rz=-Math.sin(a)*.1;scale=Math.max(.58,.82-abs*.025);}startOffset=Math.sign(d)*.35;}
+   else if(carouselMode==="grid"){const col=(i%3)-1,row=Math.floor(i/3);target.set(col*2.75,1.25-row*2.55,0);scale=.48;}
+   mesh.position.set(target.x+startOffset,target.y,target.z-.5);mesh.rotation.set(0,ry,rz);mesh.userData.index=i;mesh.userData.targetPosition=target;mesh.userData.targetRotationY=ry;mesh.userData.targetRotationZ=rz;mesh.scale.setScalar(scale);threeGroup.add(mesh);threeMeshes.push(mesh);
+   const edge=new THREE.LineSegments(new THREE.EdgesGeometry(geometry),new THREE.LineBasicMaterial({color:0x55534f,transparent:true,opacity:.28}));
+   mesh.add(edge);
   };img.src=item.url;
  });
- threeCamera.position.set(0,0,11.5);threeCamera.lookAt(0,0,0);
+ threeCamera.position.set(0,0,carouselMode==='grid'?15:carouselMode==='orbit'?12.8:11.5);threeCamera.lookAt(0,0,0);
 }
 
 function setImageMode(mode){imageMode=mode;$('stage').classList.toggle('square-mode',mode==='square');$('stage').classList.toggle('original-mode',mode==='original');$('crop-square').classList.toggle('active',mode==='square');$('crop-original').classList.toggle('active',mode==='original');draw()}
@@ -205,6 +211,9 @@ function move(n){if(items.length){active=(active+n+items.length)%items.length;dr
 let playTimer=null,backgroundUrl=null;
 function stopMotion(){if(playTimer){clearInterval(playTimer);playTimer=null;}$('play-motion').textContent='▶ PLAY';$('play-motion').classList.remove('playing');}
 function startMotion(){if(!items.length)return;stopMotion();const speed=Number($('motion-speed').value)||1;playTimer=setInterval(()=>move(1),Math.round(1900/speed));$('play-motion').textContent='Ⅱ PAUSE';$('play-motion').classList.add('playing');}
+$('carousel-menu-toggle').onclick=e=>{e.stopPropagation();const menu=$('carousel-menu');menu.classList.toggle('open');$('carousel-menu-toggle').setAttribute('aria-expanded',menu.classList.contains('open')?'true':'false');};
+document.querySelectorAll('[data-carousel-mode]').forEach(button=>button.onclick=()=>{carouselMode=button.dataset.carouselMode;const labels={coverflow:'COVERFLOW',fan:'FAN',stack:'STACK',orbit:'ORBIT',grid:'GRID'};$('carousel-menu-toggle').textContent=labels[carouselMode]+' ▾';document.querySelectorAll('[data-carousel-mode]').forEach(b=>b.style.fontWeight=b.dataset.carouselMode===carouselMode?'700':'400');$('carousel-menu').classList.remove('open');$('carousel-menu-toggle').setAttribute('aria-expanded','false');draw();});
+document.addEventListener('click',e=>{if(!e.target.closest('#carousel-menu-toggle')&&!e.target.closest('#carousel-menu')){$('carousel-menu').classList.remove('open');$('carousel-menu-toggle').setAttribute('aria-expanded','false');}});
 $('play-motion').onclick=()=>playTimer?stopMotion():startMotion();
 $('motion-speed').onchange=()=>{if(playTimer)startMotion()};
 $('scene-background').oninput=e=>{$('stage').style.backgroundColor=e.target.value;};
