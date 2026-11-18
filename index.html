@@ -195,7 +195,7 @@ function applyModelEffect(effect){
 async function loadModelFile(file){
  if(!file)return;
  if(!file.name.toLowerCase().endsWith('.glb')){alert('For now, please use a single-file .GLB model.');return;}
- initModelViewport();$('model-status').textContent='LOADING MODEL…';$('model-name').textContent=file.name;
+ initModelViewport();$('model-status').textContent='LOADING MODEL…';$('model-name').textContent=file.name;$('model-empty').style.display='flex';$('model-empty').innerHTML='<span>LOADING MODEL</span><small>PLEASE WAIT</small>';
  if(modelUrl)URL.revokeObjectURL(modelUrl);
  modelUrl=URL.createObjectURL(file);
  try{
@@ -204,8 +204,8 @@ async function loadModelFile(file){
   modelOriginalMaterials=[];
   modelRoot.traverse(o=>{if(o.isMesh){const originals=Array.isArray(o.material)?o.material.map(m=>m.clone()):o.material.clone();o.userData.originalMaterials=originals;modelOriginalMaterials.push(o);o.castShadow=true;o.frustumCulled=false;}});
   modelScene.add(modelRoot);applyModelEffect($('model-effect').value);
-  $('three-lab-stage').classList.add('has-model');$('model-status').textContent='MODEL READY · '+modelOriginalMaterials.length+' MESHES';
- }catch(err){console.error(err);$('model-status').textContent='MODEL LOAD FAILED';alert('Could not load this GLB model. Check that the file is valid.');}
+  $('three-lab-stage').classList.add('has-model');$('model-empty').style.display='none';$('model-status').textContent='MODEL READY · '+modelOriginalMaterials.length+' MESHES';
+ }catch(err){console.error(err);$('model-empty').style.display='flex';$('model-empty').innerHTML='<span>LOAD FAILED</span><small>CHECK THE GLB FILE</small>';$('model-status').textContent='MODEL LOAD FAILED';alert('Could not load this GLB model. Check that the file is valid.');}
 }
 $('open-3d').onclick=()=>{show('three-lab-view');initModelViewport();resizeModelViewport()};
 $('three-home').onclick=()=>show('home');
