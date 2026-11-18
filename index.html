@@ -68,12 +68,16 @@
 .three-lab-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:#aaa;font:10px "Courier New",monospace;pointer-events:none}
 .three-lab-empty small{font-size:8px;color:#bbb}
 .three-lab-stage.has-model .three-lab-empty{display:none}
-.three-lab-stage-meta{position:absolute;z-index:4;left:12px;right:12px;bottom:10px;display:flex;justify-content:space-between;gap:10px;color:rgba(30,30,30,.45);font:8px "Courier New",monospace;pointer-events:none}
+.three-lab-stage-meta{display:none}
 #model-canvas{z-index:1;filter:grayscale(var(--model-mono,0))}
-#model-noise{position:absolute;z-index:3;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;mix-blend-mode:soft-light}
-.three-lab-settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0;padding:13px;border:1px solid #e7e7e7}
-.three-lab-settings section{min-width:0}
-.three-lab-settings h3{margin:0 0 11px;font:9px "Courier New",monospace;color:#999;font-weight:400}
+#model-noise{position:absolute;z-index:3;inset:0;width:100%;height:100%;display:block;pointer-events:none;opacity:0;mix-blend-mode:overlay}
+.three-lab-settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}
+.three-lab-settings details{min-width:0;border:1px solid #e7e7e7;padding:11px 13px}
+.three-lab-settings summary{cursor:pointer;list-style:none;font:9px "Courier New",monospace;color:#888}
+.three-lab-settings summary::-webkit-details-marker{display:none}
+.three-lab-settings summary:after{content:"＋";float:right;color:#aaa}
+.three-lab-settings details[open] summary{margin-bottom:11px}
+.three-lab-settings details[open] summary:after{content:"−"}
 .fx-row{display:grid;grid-template-columns:105px minmax(80px,1fr) 34px;align-items:center;gap:8px;margin:9px 0;font:9px "Courier New",monospace;color:#777}
 .fx-row input[type=range]{width:100%;accent-color:#333}
 .fx-row output{color:#aaa;text-align:right;font-variant-numeric:tabular-nums}
@@ -120,9 +124,9 @@
 <div class="three-lab-stage" id="three-lab-stage">
   <canvas id="model-canvas" aria-label="Interactive 3D model viewport"></canvas><canvas id="model-noise" aria-hidden="true"></canvas>
   <div class="three-lab-empty" id="model-empty"><span>3D VIEWPORT</span><small>LOAD A .GLB MODEL TO BEGIN</small></div>
-  <div class="three-lab-stage-meta"><span id="model-status">WAITING FOR MODEL</span><span>DRAG · ROTATE / SCROLL · ZOOM</span></div>
+  
 </div>
-<div class="three-lab-settings"><section><h3>MODEL / SURFACE</h3><label class="fx-row">TRANSPARENCY <input id="plastic-opacity" type="range" min="35" max="100" value="82"><output id="plastic-opacity-value">82</output></label><label class="fx-row">ROUGHNESS <input id="surface-roughness" type="range" min="10" max="100" value="72"><output id="surface-roughness-value">72</output></label><label class="fx-row">REFLECTION <input id="chrome-reflection" type="range" min="0" max="100" value="58"><output id="chrome-reflection-value">58</output></label></section><section><h3>IMAGE FX / OVERLAY</h3><label class="fx-check"><input id="image-mono" type="checkbox"> MONOCHROME</label><label class="fx-row">GRAIN <input id="image-grain" type="range" min="0" max="100" value="0"><output id="image-grain-value">0</output></label><label class="fx-row">NOISE <input id="image-noise" type="range" min="0" max="100" value="0"><output id="image-noise-value">0</output></label></section></div><div class="three-lab-controls">
+<div class="three-lab-settings"><details open><summary>MODEL / SURFACE</summary><label class="fx-row">TRANSPARENCY <input id="plastic-opacity" type="range" min="35" max="100" value="82"><output id="plastic-opacity-value">82</output></label><label class="fx-row">ROUGHNESS <input id="surface-roughness" type="range" min="10" max="100" value="72"><output id="surface-roughness-value">72</output></label><label class="fx-row">REFLECTION <input id="chrome-reflection" type="range" min="0" max="100" value="58"><output id="chrome-reflection-value">58</output></label></details><details><summary>IMAGE FX / OVERLAY</summary><label class="fx-check"><input id="image-mono" type="checkbox"> MONOCHROME</label><label class="fx-row">GRAIN <input id="image-grain" type="range" min="0" max="100" value="0"><output id="image-grain-value">0</output></label><label class="fx-row">NOISE <input id="image-noise" type="range" min="0" max="100" value="0"><output id="image-noise-value">0</output></label></details></div><div class="three-lab-controls">
   <div class="three-lab-control"><label for="model-background">BACKGROUND</label><input id="model-background" type="color" value="#e9e8e4"></div>
   <label class="three-lab-check"><input id="model-auto-rotate" type="checkbox"> AUTO ROTATE</label>
   <button class="small-action" id="model-reset">RESET VIEW</button>
@@ -132,7 +136,7 @@
     <button class="small-action" id="model-export">RECORD VIDEO ↗</button>
   </div>
 </div>
-<p class="three-lab-note">GLB · REALTIME MATERIAL PREVIEW · MP4 WHEN SUPPORTED, OTHERWISE WEBM</p>
+
 </section>
 </main><footer>YS665VS</footer></div>
 <script type="module">
@@ -191,14 +195,15 @@ function applyModelEffect(effect){
  if(!modelRoot)return;
  const opacity=Number($('plastic-opacity').value)/100,roughness=Number($('surface-roughness').value)/100,reflection=Number($('chrome-reflection').value)/100;
  modelRoot.traverse(o=>{
-  if(!o.isMesh)return;const originals=o.userData.originalMaterials;if(!originals)return;
+  if(!o.isMesh)return;const stored=o.userData.originalMaterials;if(!stored)return;
+  const originals=Array.isArray(stored)?stored:[stored];
   const make=m=>{
-   if(effect==='matte-plastic')return new THREE.MeshPhysicalMaterial({color:0xd9d9d5,map:m.map||null,normalMap:m.normalMap||null,roughness,metalness:0,transparent:opacity<1,opacity,clearcoat:.12,clearcoatRoughness:.8,side:m.side||THREE.FrontSide});
+   if(effect==='matte-plastic')return new THREE.MeshPhysicalMaterial({color:0xd9d9d5,map:m.map||null,normalMap:m.normalMap||null,roughness,metalness:0,transparent:opacity<1,opacity,depthWrite:opacity>=1,clearcoat:.12,clearcoatRoughness:.8,side:m.side||THREE.FrontSide});
    if(effect==='soft-chrome')return new THREE.MeshPhysicalMaterial({color:0xb9bec2,map:m.map||null,metalness:.35+reflection*.48,roughness:.48-reflection*.22,clearcoat:.25,clearcoatRoughness:.35,side:m.side||THREE.FrontSide});
    const mat=m.clone();if(effect==='clay'){mat.color.set('#a7a7a2');mat.metalness=0;mat.roughness=1;if('map'in mat)mat.map=null;}return mat;
   };
-  const old=o.material,arr=Array.isArray(old)?old:[old];arr.forEach(m=>m.dispose());
-  o.material=effect==='original'?originals.map(m=>m.clone()):(Array.isArray(originals)?originals.map(make):make(originals));
+  const old=o.material,arr=Array.isArray(old)?old:[old];arr.forEach(m=>{if(m&&!originals.includes(m))m.dispose()});
+  o.material=effect==='original'?originals.map(m=>m.clone()):(Array.isArray(stored)?originals.map(make):make(originals[0]));
  });
 }
 function updateModelFx(){
@@ -208,15 +213,21 @@ function updateModelFx(){
  ['plastic-opacity','surface-roughness','chrome-reflection','image-grain','image-noise'].forEach(id=>$(id+'-value').textContent=$(id).value);
  if(['matte-plastic','soft-chrome'].includes($('model-effect').value))applyModelEffect($('model-effect').value);
 }
+let modelNoiseLast=0;
 function drawModelNoise(){
  const canvas=$('model-noise'),stage=$('three-lab-stage'),w=Math.max(1,Math.floor(stage.clientWidth)),h=Math.max(1,Math.floor(stage.clientHeight));
- if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}
- const ctx=canvas.getContext('2d'),grain=Number($('image-grain').value),noise=Number($('image-noise').value);
- if(!grain&&!noise){ctx.clearRect(0,0,w,h);return;}
- const scale=grain?1:2,sw=Math.max(1,Math.ceil(w/scale)),sh=Math.max(1,Math.ceil(h/scale)),tile=document.createElement('canvas');tile.width=sw;tile.height=sh;
- const tc=tile.getContext('2d'),data=tc.createImageData(sw,sh);
- for(let i=0;i<data.data.length;i+=4){const v=Math.random()*255,alpha=Math.round(Math.max(grain,noise)*(.10+Math.random()*.25));data.data[i]=v;data.data[i+1]=v;data.data[i+2]=v;data.data[i+3]=alpha;}
- tc.putImageData(data,0,0);ctx.clearRect(0,0,w,h);ctx.imageSmoothingEnabled=grain>0;ctx.drawImage(tile,0,0,w,h);
+ if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;modelNoiseLast=0;}
+ const ctx=canvas.getContext('2d'),grain=Number($('image-grain').value),noise=Number($('image-noise').value),strength=Math.max(grain,noise);
+ canvas.style.opacity=String(strength?(.18+strength/100*.62):0);
+ if(!strength){ctx.clearRect(0,0,w,h);return;}
+ const now=performance.now();if(now-modelNoiseLast<85)return;modelNoiseLast=now;
+ const scale=grain>0?1:Math.max(2,Math.round(5-noise/28)),sw=Math.max(1,Math.ceil(w/scale)),sh=Math.max(1,Math.ceil(h/scale)),tile=document.createElement('canvas');tile.width=sw;tile.height=sh;
+ const tc=tile.getContext('2d'),data=tc.createImageData(sw,sh),grainMix=grain/100,noiseMix=noise/100;
+ for(let i=0;i<data.data.length;i+=4){
+  const fine=Math.random()*255,coarse=Math.random()<.5?0:255,v=grainMix>0?fine*(1-noiseMix*.45)+coarse*noiseMix*.45:coarse;
+  data.data[i]=v;data.data[i+1]=v;data.data[i+2]=v;data.data[i+3]=Math.round(90+strength*1.55);
+ }
+ tc.putImageData(data,0,0);ctx.clearRect(0,0,w,h);ctx.imageSmoothingEnabled=grainMix>0;ctx.drawImage(tile,0,0,w,h);
 }
 
 async function loadModelFile(file){
@@ -241,7 +252,13 @@ $('model-file').onchange=e=>{loadModelFile(e.target.files?.[0]);e.target.value='
 $('model-effect').onchange=e=>applyModelEffect(e.target.value);
 ['plastic-opacity','surface-roughness','chrome-reflection','image-grain','image-noise','image-mono'].forEach(id=>$(id).addEventListener('input',updateModelFx));
 $('model-background').oninput=e=>{const c=new THREE.Color(e.target.value);if(modelScene)modelScene.background=c;$('three-lab-stage').style.background=e.target.value};
-$('model-reset').onclick=()=>{if(modelRoot){modelRoot.rotation.set(0,0,0);fitModel(modelRoot)}};
+$('model-reset').onclick=()=>{
+ if(modelRoot){modelRoot.rotation.set(0,0,0);applyModelEffect('original');fitModel(modelRoot)}
+ $('model-effect').value='original';$('plastic-opacity').value='82';$('surface-roughness').value='72';$('chrome-reflection').value='58';
+ $('image-mono').checked=false;$('image-grain').value='0';$('image-noise').value='0';$('model-auto-rotate').checked=false;
+ $('model-background').value='#e9e8e4';$('three-lab-stage').style.background='#e9e8e4';if(modelScene)modelScene.background=new THREE.Color('#e9e8e4');
+ updateModelFx();
+};
 $('model-canvas').addEventListener('pointerdown',e=>{if(!modelRoot||e.button!==0)return;modelPointer={x:e.clientX,y:e.clientY};$('model-canvas').setPointerCapture(e.pointerId)});
 $('model-canvas').addEventListener('pointermove',e=>{if(!modelPointer||!modelRoot)return;const dx=e.clientX-modelPointer.x,dy=e.clientY-modelPointer.y;modelRoot.rotation.y+=dx*.008;modelRoot.rotation.x+=dy*.008;modelPointer={x:e.clientX,y:e.clientY}});
 ['pointerup','pointercancel','lostpointercapture'].forEach(t=>$('model-canvas').addEventListener(t,()=>modelPointer=null));
