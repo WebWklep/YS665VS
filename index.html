@@ -71,7 +71,7 @@
 .three-lab-stage-meta{display:none}
 #model-canvas{z-index:1;filter:grayscale(var(--model-mono,0))}
 #model-noise{position:absolute;z-index:3;inset:0;width:100%;height:100%;display:block;pointer-events:none;opacity:0;mix-blend-mode:normal}
-.three-lab-settings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}
+.three-lab-settings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
 .three-lab-settings details{min-width:0;border:1px solid #e7e7e7;padding:11px 13px}
 .three-lab-settings summary{cursor:pointer;list-style:none;font:9px "Courier New",monospace;color:#888}
 .three-lab-settings summary::-webkit-details-marker{display:none}
@@ -79,7 +79,7 @@
 .three-lab-settings details[open] summary{margin-bottom:11px}
 .three-lab-settings details[open] summary:after{content:"−"}
 .fx-row{display:grid;grid-template-columns:105px minmax(80px,1fr) 34px;align-items:center;gap:8px;margin:9px 0;font:9px "Courier New",monospace;color:#777}
-.fx-row input[type=range]{width:100%;accent-color:#333}
+.fx-row input[type=range]{width:100%;accent-color:#333}.fx-row select{width:100%;height:26px;border:1px solid #ddd;background:#fff;padding:0 5px;font:9px "Courier New",monospace;color:#555}.fx-check input[type=color]{width:28px;height:23px;padding:1px;border:1px solid #ddd;background:#fff}
 .fx-row output{color:#aaa;text-align:right;font-variant-numeric:tabular-nums}
 .fx-check{display:flex;align-items:center;gap:7px;margin:9px 0;font:9px "Courier New",monospace;color:#777}
 .fx-check input{accent-color:#222}
@@ -121,14 +121,14 @@
 <div class="template-header"><div><div class="editorial-meta">MODEL WORKSPACE / 005</div><h2 class="template-title">3D LAB</h2><p class="template-subtitle">Import a model. Shape the look. Record the motion.</p></div><div class="template-code">REALTIME<br>3D / VIDEO</div></div>
 <div class="three-lab-toolbar">
   <div class="three-lab-actions"><button class="small-action" id="model-upload">+ LOAD GLB MODEL</button><input id="model-file" type="file" accept=".glb,model/gltf-binary" hidden><span class="three-lab-file" id="model-name">NO MODEL LOADED</span></div>
-  <div class="three-lab-actions"><label class="three-lab-label" for="model-effect">MATERIAL</label><select id="model-effect"><option value="original">ORIGINAL</option><option value="matte-plastic">MATTE PLASTIC</option><option value="soft-chrome">SOFT CHROME</option><option value="clay">CLAY</option></select></div>
+  <div class="three-lab-actions"><label class="three-lab-label" for="model-effect">MATERIAL</label><select id="model-effect"><option value="original">ORIGINAL</option><option value="matte-plastic">MATTE PLASTIC</option><option value="soft-chrome">SOFT CHROME</option><option value="clay">CLAY</option><option value="porcelain">PORCELAIN</option><option value="brushed-metal">BRUSHED METAL</option><option value="rubber">SOFT RUBBER</option></select></div>
 </div>
 <div class="three-lab-stage" id="three-lab-stage">
   <canvas id="model-canvas" aria-label="Interactive 3D model viewport"></canvas><canvas id="model-noise" aria-hidden="true"></canvas>
   <div class="three-lab-empty" id="model-empty"><span>3D VIEWPORT</span><small>LOAD A .GLB MODEL TO BEGIN</small></div>
   
 </div>
-<div class="three-lab-settings"><details open><summary>MODEL / SURFACE</summary><label class="fx-row">TRANSPARENCY <input id="plastic-opacity" type="range" min="35" max="100" value="82"><output id="plastic-opacity-value">82</output></label><label class="fx-row">ROUGHNESS <input id="surface-roughness" type="range" min="10" max="100" value="72"><output id="surface-roughness-value">72</output></label><label class="fx-row">REFLECTION <input id="chrome-reflection" type="range" min="0" max="100" value="58"><output id="chrome-reflection-value">58</output></label></details><details><summary>IMAGE FX / OVERLAY</summary><label class="fx-check"><input id="image-mono" type="checkbox"> MONOCHROME</label><label class="fx-row">GRAIN <input id="image-grain" type="range" min="0" max="100" value="0"><output id="image-grain-value">0</output></label><label class="fx-row">NOISE <input id="image-noise" type="range" min="0" max="100" value="0"><output id="image-noise-value">0</output></label></details></div><div class="three-lab-controls">
+<div class="three-lab-settings"><details open><summary>MODEL / SURFACE</summary><label class="fx-row">TRANSPARENCY <input id="plastic-opacity" type="range" min="35" max="100" value="82"><output id="plastic-opacity-value">82</output></label><label class="fx-row">ROUGHNESS <input id="surface-roughness" type="range" min="10" max="100" value="72"><output id="surface-roughness-value">72</output></label><label class="fx-row">REFLECTION <input id="chrome-reflection" type="range" min="0" max="100" value="58"><output id="chrome-reflection-value">58</output></label></details><details><summary>POINTS / WIREFRAME</summary><label class="fx-row">MODE <select id="model-points-mode"><option value="off">OFF</option><option value="points">POINT CLOUD</option><option value="wire">WIREFRAME</option><option value="both">POINTS + WIREFRAME</option></select></label><label class="fx-row">DENSITY <input id="model-points-density" type="range" min="100" max="5000" step="100" value="1800"><output id="model-points-density-value">1800</output></label><label class="fx-row">POINT SIZE <input id="model-points-size" type="range" min="2" max="20" value="8"><output id="model-points-size-value">8</output></label><label class="fx-row">OPACITY <input id="model-points-opacity" type="range" min="10" max="100" value="72"><output id="model-points-opacity-value">72</output></label><label class="fx-check">POINT COLOR <input id="model-points-color" type="color" value="#202020"></label></details><details><summary>IMAGE FX / POST</summary><label class="fx-check"><input id="image-mono" type="checkbox"> MONOCHROME</label><label class="fx-row">BRIGHTNESS <input id="image-brightness" type="range" min="50" max="160" value="100"><output id="image-brightness-value">100</output></label><label class="fx-row">CONTRAST <input id="image-contrast" type="range" min="50" max="180" value="100"><output id="image-contrast-value">100</output></label><label class="fx-row">SATURATION <input id="image-saturation" type="range" min="0" max="180" value="100"><output id="image-saturation-value">100</output></label><label class="fx-row">GRAIN <input id="image-grain" type="range" min="0" max="100" value="0"><output id="image-grain-value">0</output></label><label class="fx-row">NOISE <input id="image-noise" type="range" min="0" max="100" value="0"><output id="image-noise-value">0</output></label></details></div><div class="three-lab-controls">
   <div class="three-lab-control"><label for="model-background">BACKGROUND</label><input id="model-background" type="color" value="#e9e8e4"></div>
   <label class="three-lab-check"><input id="model-auto-rotate" type="checkbox"> AUTO ROTATE</label>
   <button class="small-action" id="model-reset">RESET VIEW</button>
@@ -202,18 +202,40 @@ function applyModelEffect(effect){
   const make=m=>{
    if(effect==='matte-plastic')return new THREE.MeshPhysicalMaterial({color:0xd9d9d5,map:m.map||null,normalMap:m.normalMap||null,roughness,metalness:0,transparent:opacity<1,opacity,depthWrite:opacity>=1,clearcoat:.12,clearcoatRoughness:.8,side:m.side||THREE.FrontSide});
    if(effect==='soft-chrome')return new THREE.MeshPhysicalMaterial({color:0xb9bec2,map:m.map||null,metalness:.35+reflection*.48,roughness:.48-reflection*.22,clearcoat:.25,clearcoatRoughness:.35,side:m.side||THREE.FrontSide});
+   if(effect==='porcelain')return new THREE.MeshPhysicalMaterial({color:0xe4e1da,roughness:.22,metalness:0,clearcoat:.72,clearcoatRoughness:.18,side:m.side||THREE.FrontSide});
+   if(effect==='brushed-metal')return new THREE.MeshStandardMaterial({color:0x9da4a8,metalness:.88,roughness:.34,side:m.side||THREE.FrontSide});
+   if(effect==='rubber')return new THREE.MeshStandardMaterial({color:0x252525,roughness:.94,metalness:0,side:m.side||THREE.FrontSide});
    const mat=m.clone();if(effect==='clay'){mat.color.set('#a7a7a2');mat.metalness=0;mat.roughness=1;if('map'in mat)mat.map=null;}return mat;
   };
   const old=o.material,arr=Array.isArray(old)?old:[old];arr.forEach(m=>{if(m&&!originals.includes(m))m.dispose()});
   o.material=effect==='original'?(Array.isArray(stored)?originals.map(m=>m.clone()):originals[0].clone()):(Array.isArray(stored)?originals.map(make):make(originals[0]));
  });
 }
+function getModelPostFilter(){return [$('image-mono').checked?'grayscale(1)':'grayscale(0)','brightness('+Number($('image-brightness').value)+'%)','contrast('+Number($('image-contrast').value)+'%)','saturate('+Number($('image-saturation').value)+'%)'].join(' ')}
 function updateModelFx(){
- $('model-canvas').style.filter=$('image-mono').checked?'grayscale(1)':'none';
+ $('model-canvas').style.filter=getModelPostFilter();
  $('model-noise').dataset.grain=$('image-grain').value;$('model-noise').dataset.noise=$('image-noise').value;
  $('model-noise').style.opacity=String(Math.max(Number($('image-grain').value),Number($('image-noise').value))/100*.72);
- ['plastic-opacity','surface-roughness','chrome-reflection','image-grain','image-noise'].forEach(id=>$(id+'-value').textContent=$(id).value);
+ ['plastic-opacity','surface-roughness','chrome-reflection','image-grain','image-noise','image-brightness','image-contrast','image-saturation','model-points-density','model-points-size','model-points-opacity'].forEach(id=>$(id+'-value').textContent=$(id).value);
  if(['matte-plastic','soft-chrome'].includes($('model-effect').value))applyModelEffect($('model-effect').value);
+}
+function clearModelPointOverlays(){if(!modelRoot)return;modelRoot.traverse(o=>{const g=o.userData.modelPointOverlay;if(g){o.remove(g);g.traverse(x=>{if(x.geometry)x.geometry.dispose();if(x.material)x.material.dispose()});delete o.userData.modelPointOverlay;}})}
+function sampleMeshSurface(mesh,count){
+ const g=mesh.geometry,pos=g.attributes.position,index=g.index;if(!pos||pos.count<3)return null;
+ const triCount=index?index.count/3:pos.count/3,cumulative=[],a=new THREE.Vector3(),b=new THREE.Vector3(),c=new THREE.Vector3(),ab=new THREE.Vector3(),ac=new THREE.Vector3();let total=0;
+ for(let t=0;t<triCount;t++){const ia=index?index.getX(t*3):t*3,ib=index?index.getX(t*3+1):t*3+1,ic=index?index.getX(t*3+2):t*3+2;a.fromBufferAttribute(pos,ia);b.fromBufferAttribute(pos,ib);c.fromBufferAttribute(pos,ic);ab.subVectors(b,a);ac.subVectors(c,a);total+=ab.cross(ac).length()*.5;cumulative.push(total)}
+ if(!total)return null;const out=new Float32Array(count*3),target=new THREE.Vector3();
+ for(let n=0;n<count;n++){const pick=Math.random()*total;let lo=0,hi=cumulative.length-1;while(lo<hi){const mid=(lo+hi)>>1;if(cumulative[mid]<pick)lo=mid+1;else hi=mid;}const t=lo,ia=index?index.getX(t*3):t*3,ib=index?index.getX(t*3+1):t*3+1,ic=index?index.getX(t*3+2):t*3+2;a.fromBufferAttribute(pos,ia);b.fromBufferAttribute(pos,ib);c.fromBufferAttribute(pos,ic);const u=Math.sqrt(Math.random()),v=Math.random(),wa=1-u,wb=u*(1-v),wc=u*v;target.set(a.x*wa+b.x*wb+c.x*wc,a.y*wa+b.y*wb+c.y*wc);const k=n*3;out[k]=target.x;out[k+1]=target.y;out[k+2]=target.z;}
+ return out;
+}
+function updateModelPoints(){
+ if(!modelRoot)return;clearModelPointOverlays();const mode=$('model-points-mode').value;if(mode==='off')return;
+ const meshes=[];modelRoot.traverse(o=>{if(o.isMesh&&o.geometry?.attributes?.position)meshes.push(o)});if(!meshes.length)return;
+ const total=Number($('model-points-density').value),perMesh=Math.max(40,Math.round(total/meshes.length)),size=Number($('model-points-size').value)/1000,opacity=Number($('model-points-opacity').value)/100,color=$('model-points-color').value;
+ meshes.forEach(mesh=>{const group=new THREE.Group();mesh.add(group);mesh.userData.modelPointOverlay=group;mesh.geometry.computeBoundingSphere();const radius=mesh.geometry.boundingSphere?.radius||1;
+  if(mode==='points'||mode==='both'){const points=sampleMeshSurface(mesh,perMesh);if(points){const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(points,3));const mat=new THREE.PointsMaterial({color,size:Math.max(.001,radius*size*8),transparent:true,opacity,sizeAttenuation:true,depthTest:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1});group.add(new THREE.Points(geo,mat));}}
+  if(mode==='wire'||mode==='both'){const geo=new THREE.EdgesGeometry(mesh.geometry,24),mat=new THREE.LineBasicMaterial({color,transparent:true,opacity:Math.min(1,opacity+.12),depthTest:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1});group.add(new THREE.LineSegments(geo,mat));}
+ });
 }
 let modelNoiseLast=0;
 function drawModelNoise(){
@@ -245,7 +267,7 @@ async function loadModelFile(file){
   disposeModel();modelRoot=gltf.scene;fitModel(modelRoot);modelMixer=null;if(gltf.animations&&gltf.animations.length){modelMixer=new THREE.AnimationMixer(modelRoot);gltf.animations.forEach(clip=>modelMixer.clipAction(clip).play());modelClock.start();}
   modelOriginalMaterials=[];
   modelRoot.traverse(o=>{if(o.isMesh){const originals=Array.isArray(o.material)?o.material.map(m=>m.clone()):o.material.clone();o.userData.originalMaterials=originals;modelOriginalMaterials.push(o);o.castShadow=true;o.frustumCulled=false;}});
-  modelScene.add(modelRoot);applyModelEffect($('model-effect').value);
+  modelScene.add(modelRoot);applyModelEffect($('model-effect').value);updateModelPoints();updateModelFx();
   $('three-lab-stage').classList.add('has-model');$('model-empty').style.display='none';$('model-name').textContent=file.name+' · '+modelOriginalMaterials.length+' MESHES';
  }catch(err){console.error(err);$('model-empty').style.display='flex';$('model-empty').innerHTML='<span>LOAD FAILED</span><small>CHECK THE GLB FILE</small>';$('model-name').textContent='LOAD FAILED · '+file.name;alert('Could not load this GLB model. Check that the file is valid.');}
 }
@@ -255,13 +277,14 @@ $('open-type').onclick=()=>{show('editorial-view');renderEditorialAssets()};
 $('type-home').onclick=()=>show('home');
 $('model-upload').onclick=()=>$('model-file').click();
 $('model-file').onchange=e=>{loadModelFile(e.target.files?.[0]);e.target.value=''};
-$('model-effect').onchange=e=>applyModelEffect(e.target.value);
-['plastic-opacity','surface-roughness','chrome-reflection','image-grain','image-noise','image-mono'].forEach(id=>$(id).addEventListener('input',updateModelFx));
+$('model-effect').onchange=e=>{applyModelEffect(e.target.value);updateModelPoints()};
+['plastic-opacity','surface-roughness','chrome-reflection','image-grain','image-noise','image-mono','image-brightness','image-contrast','image-saturation'].forEach(id=>$(id).addEventListener('input',updateModelFx));
+['model-points-mode','model-points-density','model-points-size','model-points-opacity','model-points-color'].forEach(id=>$(id).addEventListener('input',updateModelPoints));
 $('model-background').oninput=e=>{const c=new THREE.Color(e.target.value);if(modelScene)modelScene.background=c;$('three-lab-stage').style.background=e.target.value};
 $('model-reset').onclick=()=>{
  if(modelRoot){modelRoot.rotation.set(0,0,0);applyModelEffect('original');fitModel(modelRoot)}
  $('model-effect').value='original';$('plastic-opacity').value='82';$('surface-roughness').value='72';$('chrome-reflection').value='58';
- $('image-mono').checked=false;$('image-grain').value='0';$('image-noise').value='0';$('model-auto-rotate').checked=false;
+ $('image-mono').checked=false;$('image-grain').value='0';$('image-noise').value='0';$('image-brightness').value='100';$('image-contrast').value='100';$('image-saturation').value='100';$('model-points-mode').value='off';$('model-points-density').value='1800';$('model-points-size').value='8';$('model-points-opacity').value='72';$('model-points-color').value='#202020';$('model-auto-rotate').checked=false;updateModelPoints();
  $('model-background').value='#e9e8e4';$('three-lab-stage').style.background='#e9e8e4';if(modelScene)modelScene.background=new THREE.Color('#e9e8e4');
  updateModelFx();
 };
@@ -280,7 +303,7 @@ $('model-export').onclick=async()=>{
  let stream=null,recorder=null,startedAt=0,raf=0,started=false;
  try{
   modelExporting=true;modelRenderer.setPixelRatio(1);modelRenderer.setSize(w,h,false);modelCamera.aspect=w/h;modelCamera.updateProjectionMatrix();modelScene.background=new THREE.Color(bg);modelRenderer.render(modelScene,modelCamera);
-  const output=document.createElement('canvas');output.width=w;output.height=h;const outCtx=output.getContext('2d');const composite=()=>{outCtx.save();if($('image-mono').checked)outCtx.filter='grayscale(1)';outCtx.drawImage($('model-canvas'),0,0,w,h);outCtx.restore();outCtx.drawImage($('model-noise'),0,0,w,h)};composite();stream=output.captureStream(30);
+  const output=document.createElement('canvas');output.width=w;output.height=h;const outCtx=output.getContext('2d');const composite=()=>{outCtx.save();outCtx.filter=getModelPostFilter();outCtx.drawImage($('model-canvas'),0,0,w,h);outCtx.restore();outCtx.drawImage($('model-noise'),0,0,w,h)};composite();stream=output.captureStream(30);
   const candidates=['video/mp4;codecs=avc1.42E01E','video/mp4','video/webm;codecs=vp9','video/webm'];
   const mime=candidates.find(x=>MediaRecorder.isTypeSupported(x));if(!mime)throw new Error('This browser cannot record MP4 or WebM. Try another browser.');
   recorder=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:16000000});const chunks=[];
