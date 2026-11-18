@@ -76,7 +76,7 @@
 #model-export:disabled{opacity:.45;cursor:wait}
 .three-lab-note{margin:10px 0;color:#bbb;font:8px "Courier New",monospace}
 @media(max-width:650px){.three-lab-stage{height:58vh;min-height:270px}.three-lab-export{width:100%;margin-left:0}.three-lab-stage-meta{font-size:7px}.three-lab-file{max-width:130px}}
-</style></head><body><div class="page"><header><h1>YOUR SWEET SIX SIX FIVE VISUAL STUDIO</h1></header><main>
+</style><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script></head><body><div class="page"><header><h1>YOUR SWEET SIX SIX FIVE VISUAL STUDIO</h1></header><main>
 <section id="home" class="view active">
 <nav class="path" aria-label="Путь"><button class="current" disabled>MOTION LIBRARY</button><span class="sep">/</span><span class="editorial-meta">PERSONAL VISUAL SYSTEMS</span></nav>
 <div class="library-intro"><div><div class="editorial-meta">SELECT A TEMPLATE</div><h2 class="library-heading">Motion systems<span>01 — 05</span></h2></div><p class="library-note">A small collection of reusable visual ideas.</p></div>
@@ -130,7 +130,7 @@ import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/
 const $=id=>document.getElementById(id);
 
 /* Independent 3D model viewport */
-let modelRenderer=null,modelScene=null,modelCamera=null,modelRoot=null,modelLoader=null,modelFrame=0,modelPointer=null,modelUrl=null,modelOriginalMaterials=[];
+let modelRenderer=null,modelScene=null,modelCamera=null,modelRoot=null,modelLoader=null,modelFrame=0,modelPointer=null,modelUrl=null,modelOriginalMaterials=[],modelMixer=null,modelClock=new THREE.Clock();
 let modelExporting=false;
 function initModelViewport(){
  if(modelRenderer)return;
@@ -152,6 +152,7 @@ function initModelViewport(){
  const render=()=>{
   modelFrame=requestAnimationFrame(render);
   if(modelRoot&&$('model-auto-rotate').checked&&!modelExporting)modelRoot.rotation.y+=.004;
+  if(modelMixer&&!modelExporting)modelMixer.update(Math.min(.05,modelClock.getDelta()));
   modelRenderer.render(modelScene,modelCamera);
  };
  render();
@@ -166,7 +167,7 @@ function disposeModel(){
  if(!modelRoot)return;
  modelScene.remove(modelRoot);
  modelRoot.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){const mats=Array.isArray(o.material)?o.material:[o.material];mats.forEach(m=>{if(m.map&&m.map!==undefined){};m.dispose()})}});
- modelRoot=null;modelOriginalMaterials=[];
+ modelRoot=null;modelOriginalMaterials=[];modelMixer=null;
 }
 function fitModel(root){
  const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
@@ -199,7 +200,7 @@ async function loadModelFile(file){
  modelUrl=URL.createObjectURL(file);
  try{
   const gltf=await modelLoader.loadAsync(modelUrl);
-  disposeModel();modelRoot=gltf.scene;fitModel(modelRoot);
+  disposeModel();modelRoot=gltf.scene;fitModel(modelRoot);modelMixer=null;if(gltf.animations&&gltf.animations.length){modelMixer=new THREE.AnimationMixer(modelRoot);gltf.animations.forEach(clip=>modelMixer.clipAction(clip).play());modelClock.start();}
   modelOriginalMaterials=[];
   modelRoot.traverse(o=>{if(o.isMesh){const originals=Array.isArray(o.material)?o.material.map(m=>m.clone()):o.material.clone();o.userData.originalMaterials=originals;modelOriginalMaterials.push(o);o.castShadow=true;o.frustumCulled=false;}});
   modelScene.add(modelRoot);applyModelEffect($('model-effect').value);
@@ -235,7 +236,7 @@ $('model-export').onclick=async()=>{
   recorder.ondataavailable=e=>{if(e.data?.size)chunks.push(e.data)};
   recorder.onstop=()=>{const blob=new Blob(chunks,{type:mime}),url=URL.createObjectURL(blob),a=document.createElement('a'),mp4=mime.startsWith('video/mp4');a.href=url;a.download='YS665VS-3D-LAB-'+w+'x'+h+'.'+(mp4?'mp4':'webm');a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);stream?.getTracks().forEach(t=>t.stop());modelRenderer.setPixelRatio(oldPixel);modelRenderer.setSize(oldSize.x,oldSize.y,false);modelCamera.aspect=oldAspect;modelCamera.updateProjectionMatrix();modelExporting=false;btn.disabled=false;btn.textContent='RECORD VIDEO ↗';};
   btn.disabled=true;btn.textContent='RECORDING 0%…';recorder.start(500);started=true;startedAt=performance.now();
-  const tick=now=>{if(!started)return;if(oldAuto&&modelRoot)modelRoot.rotation.y+=.004;modelRenderer.render(modelScene,modelCamera);const pct=Math.min(100,Math.round((now-startedAt)/(duration*1000)*100));btn.textContent='RECORDING '+pct+'%…';if(now-startedAt>=duration*1000){started=false;cancelAnimationFrame(raf);recorder.stop();return;}raf=requestAnimationFrame(tick)};
+  const tick=now=>{if(!started)return;if(oldAuto&&modelRoot)modelRoot.rotation.y+=.004;if(modelMixer)modelMixer.update(1/30);modelRenderer.render(modelScene,modelCamera);const pct=Math.min(100,Math.round((now-startedAt)/(duration*1000)*100));btn.textContent='RECORDING '+pct+'%…';if(now-startedAt>=duration*1000){started=false;cancelAnimationFrame(raf);recorder.stop();return;}raf=requestAnimationFrame(tick)};
   raf=requestAnimationFrame(tick);
  }catch(err){console.error(err);started=false;if(raf)cancelAnimationFrame(raf);if(recorder&&recorder.state!=='inactive')recorder.stop();if(stream)stream.getTracks().forEach(t=>t.stop());modelRenderer.setPixelRatio(oldPixel);modelRenderer.setSize(oldSize.x,oldSize.y,false);modelCamera.aspect=oldAspect;modelCamera.updateProjectionMatrix();modelExporting=false;btn.disabled=false;btn.textContent='RECORD VIDEO ↗';alert(err.message||'Video export failed.');}
 };
