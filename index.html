@@ -244,7 +244,7 @@ $('model-export').onclick=async()=>{
  let stream=null,recorder=null,startedAt=0,raf=0,started=false;
  try{
   modelExporting=true;modelRenderer.setPixelRatio(1);modelRenderer.setSize(w,h,false);modelCamera.aspect=w/h;modelCamera.updateProjectionMatrix();modelScene.background=new THREE.Color(bg);modelRenderer.render(modelScene,modelCamera);
-  const output=document.createElement('canvas');output.width=w;output.height=h;const outCtx=output.getContext('2d');const composite=()=>{outCtx.drawImage($('model-canvas'),0,0,w,h);outCtx.drawImage($('model-noise'),0,0,w,h)};composite();stream=output.captureStream(30);
+  const output=document.createElement('canvas');output.width=w;output.height=h;const outCtx=output.getContext('2d');const composite=()=>{outCtx.save();if($('image-mono').checked)outCtx.filter='grayscale(1)';outCtx.drawImage($('model-canvas'),0,0,w,h);outCtx.restore();outCtx.drawImage($('model-noise'),0,0,w,h)};composite();stream=output.captureStream(30);
   const candidates=['video/mp4;codecs=avc1.42E01E','video/mp4','video/webm;codecs=vp9','video/webm'];
   const mime=candidates.find(x=>MediaRecorder.isTypeSupported(x));if(!mime)throw new Error('This browser cannot record MP4 or WebM. Try another browser.');
   recorder=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:16000000});const chunks=[];
