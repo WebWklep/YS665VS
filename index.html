@@ -55,11 +55,32 @@
 .caption-size{height:29px;border:1px solid #ddd;background:#fff;padding:0 7px;font:10px "Courier New",monospace}
 .caption-dialog-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:16px}
 @media(max-width:650px){.caption-dialog{padding:14px}}
+
+/* 3D Lab */
+.three-lab-toolbar,.three-lab-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:10px 0}
+.three-lab-actions,.three-lab-export{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.three-lab-label,.three-lab-export label,.three-lab-control label{font:9px "Courier New",monospace;color:#999}
+.three-lab-toolbar select,.three-lab-export select{height:32px;border:1px solid #ddd;background:#fff;padding:0 8px;font:10px "Courier New",monospace;color:#444}
+.three-lab-file{font:9px "Courier New",monospace;color:#aaa;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.three-lab-stage{position:relative;width:100%;height:min(62vh,620px);min-height:320px;overflow:hidden;border:1px solid #e5e5e5;background:#e9e8e4;touch-action:none}
+#model-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.three-lab-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:#aaa;font:10px "Courier New",monospace;pointer-events:none}
+.three-lab-empty small{font-size:8px;color:#bbb}
+.three-lab-stage.has-model .three-lab-empty{display:none}
+.three-lab-stage-meta{position:absolute;left:12px;right:12px;bottom:10px;display:flex;justify-content:space-between;gap:10px;color:rgba(30,30,30,.45);font:8px "Courier New",monospace;pointer-events:none}
+.three-lab-controls{padding:11px 0;border-bottom:1px solid #eee}
+.three-lab-control{display:flex;align-items:center;gap:7px}
+.three-lab-control input{width:32px;height:27px;padding:2px;border:1px solid #ddd;background:#fff}
+.three-lab-check{display:flex;align-items:center;gap:6px;font:9px "Courier New",monospace;color:#777}
+.three-lab-export{margin-left:auto}
+#model-export:disabled{opacity:.45;cursor:wait}
+.three-lab-note{margin:10px 0;color:#bbb;font:8px "Courier New",monospace}
+@media(max-width:650px){.three-lab-stage{height:58vh;min-height:270px}.three-lab-export{width:100%;margin-left:0}.three-lab-stage-meta{font-size:7px}.three-lab-file{max-width:130px}}
 </style></head><body><div class="page"><header><h1>YOUR SWEET SIX SIX FIVE VISUAL STUDIO</h1></header><main>
 <section id="home" class="view active">
 <nav class="path" aria-label="Путь"><button class="current" disabled>MOTION LIBRARY</button><span class="sep">/</span><span class="editorial-meta">PERSONAL VISUAL SYSTEMS</span></nav>
-<div class="library-intro"><div><div class="editorial-meta">SELECT A TEMPLATE</div><h2 class="library-heading">Motion systems<span>01 — 04</span></h2></div><p class="library-note">A small collection of reusable visual ideas.</p></div>
-<ul class="template-list"><li><button class="row template-row" id="open"><span><span class="template-index">01</span><span class="template-name">COVERFLOW</span><span class="template-description">Manual perspective carousel</span></span><span class="num">OPEN ↗</span></button></li><li class="template-muted"><div class="template-row-static"><span><span class="template-index">02</span><span class="template-name">FILM</span><span class="template-description">Grain / monochrome / texture</span></span><span class="num">SOON</span></div></li><li class="template-muted"><div class="template-row-static"><span><span class="template-index">03</span><span class="template-name">TYPE MOTION</span><span class="template-description">Editorial kinetic typography</span></span><span class="num">SOON</span></div></li><li class="template-muted"><div class="template-row-static"><span><span class="template-index">04</span><span class="template-name">COMPOSITION</span><span class="template-description">Layered visual arrangements</span></span><span class="num">SOON</span></div></li></ul>
+<div class="library-intro"><div><div class="editorial-meta">SELECT A TEMPLATE</div><h2 class="library-heading">Motion systems<span>01 — 05</span></h2></div><p class="library-note">A small collection of reusable visual ideas.</p></div>
+<ul class="template-list"><li><button class="row template-row" id="open"><span><span class="template-index">01</span><span class="template-name">COVERFLOW</span><span class="template-description">Manual perspective carousel</span></span><span class="num">OPEN ↗</span></button></li><li class="template-muted"><div class="template-row-static"><span><span class="template-index">02</span><span class="template-name">FILM</span><span class="template-description">Grain / monochrome / texture</span></span><span class="num">SOON</span></div></li><li class="template-muted"><div class="template-row-static"><span><span class="template-index">03</span><span class="template-name">TYPE MOTION</span><span class="template-description">Editorial kinetic typography</span></span><span class="num">SOON</span></div></li><li class="template-muted"><div class="template-row-static"><span><span class="template-index">04</span><span class="template-name">COMPOSITION</span><span class="template-description">Layered visual arrangements</span></span><span class="num">SOON</span></div></li><li><button class="row template-row" id="open-3d"><span><span class="template-index">05</span><span class="template-name">3D LAB</span><span class="template-description">Model viewport / effects / video</span></span><span class="num">OPEN ↗</span></button></li></ul>
 </section>
 <section id="anim" class="view"><nav class="path" aria-label="Путь"><button id="crumb-home">MOTION LIBRARY</button><span class="sep">/</span><button class="current" disabled>COVERFLOW</button></nav><ul class="sub"><li><button class="row" id="template"><span>Coverflow / 001</span><span class="num">MANUAL</span></button></li></ul></section>
 <section id="carousel-view" class="view"><nav class="path" aria-label="Путь"><button id="crumb-home-2">MOTION LIBRARY</button><span class="sep">/</span><button class="current" disabled>COVERFLOW / 001</button></nav>
@@ -76,11 +97,150 @@
 <div class="media-menu" id="media-menu" hidden><div class="media-tabs"><button class="media-tab active" data-media-tab="images">IMAGES</button><button class="media-tab" data-media-tab="shapes">SHAPES</button><button class="media-tab" data-media-tab="background">BACKGROUND</button></div><section class="media-section" id="media-images"><button class="small-action media-upload" id="editorial-upload">+ ADD IMAGES</button><div class="library-title">PROJECT IMAGES</div><div class="asset-strip" id="editorial-assets"></div></section><section class="media-section" id="media-shapes" hidden><button class="small-action" id="add-rect">+ RECTANGLE</button><button class="small-action" id="add-circle">+ CIRCLE</button></section><section class="media-section" id="media-background" hidden><label class="panel-label" for="canvas-background">CANVAS COLOR</label><input id="canvas-background" type="color" value="#ffffff"></section></div><div class="ratio-tools"><button class="ratio-lock locked" id="ed-ratio-lock" type="button" title="Связать формат CAROUSEL и TYPE">🔒</button><button class="orientation" id="ed-orientation" title="Сменить ориентацию"><span class="orientation-icon">▭</span></button><select id="ed-ratio" aria-label="Соотношение сторон"><option value="16/9">16:9</option><option value="9/16">9:16</option><option value="4/5">4:5</option><option value="5/4">5:4</option><option value="1/1">1:1</option><option value="3/2">3:2</option><option value="2/3">2:3</option></select></div><span class="editorial-meta">YS665VS / EDITOR</span></div>
 <div class="editorial-workspace"><div class="editorial-canvas-wrap"><div class="editorial-canvas" id="editorial-canvas"><div class="editorial-empty" id="editorial-empty">ADD AN IMAGE TO BEGIN</div></div></div>
 <aside class="editorial-panel" id="type-panel"><div class="panel-group"><span class="panel-label">TEXT</span><textarea id="text-content" rows="3" placeholder="Выбери заголовок или подпись" disabled></textarea></div><div class="panel-group"><span class="panel-label">FONT</span><select id="font-choice"><option value="Manrope">Manrope</option><option value="IBM Plex Mono">IBM Plex Mono</option><option value="Cormorant Garamond">Cormorant Garamond</option></select></div><div class="panel-group"><span class="panel-label">CASE</span><div class="type-buttons"><button class="type-button active" id="case-normal" title="Как набрано">Aa</button><button class="type-button" id="case-upper" title="Заглавные">AA</button><button class="type-button" id="case-lower" title="Строчные">aa</button></div></div><div class="panel-group"><span class="panel-label">STYLE</span><div class="type-buttons"><button class="type-button" id="style-bold" title="Bold"><b>B</b></button><button class="type-button" id="style-italic" title="Italic"><i>I</i></button></div></div><div class="panel-group"><span class="panel-label">COLOR</span><div class="color-tools"><input type="color" id="text-color" value="#171717" aria-label="Цвет текста"><button id="eyedropper" type="button">PICK FROM CANVAS</button></div></div><div class="panel-group"><span class="panel-label">ALIGNMENT</span><div class="type-buttons"><button class="type-button" id="align-left" title="Слева">≡</button><button class="type-button" id="align-center" title="По центру">☰</button><button class="type-button" id="align-right" title="Справа">≡</button></div></div><div class="panel-group"><span class="panel-label">OBJECT</span><button class="small-action" id="delete-text">DELETE SELECTED</button></div></aside></div>
-</section></main><footer>YS665VS</footer></div>
+</section>
+<section id="three-lab-view" class="view">
+<nav class="path" aria-label="Путь"><button id="three-home">MOTION LIBRARY</button><span class="sep">/</span><button class="current" disabled>3D LAB / VIEWPORT</button></nav>
+<div class="template-header"><div><div class="editorial-meta">MODEL WORKSPACE / 005</div><h2 class="template-title">3D LAB</h2><p class="template-subtitle">Import a model. Shape the look. Record the motion.</p></div><div class="template-code">REALTIME<br>3D / VIDEO</div></div>
+<div class="three-lab-toolbar">
+  <div class="three-lab-actions"><button class="small-action" id="model-upload">+ LOAD GLB MODEL</button><input id="model-file" type="file" accept=".glb,model/gltf-binary" hidden><span class="three-lab-file" id="model-name">NO MODEL LOADED</span></div>
+  <div class="three-lab-actions"><label class="three-lab-label" for="model-effect">MATERIAL</label><select id="model-effect"><option value="original">ORIGINAL</option><option value="clay">CLAY</option><option value="wireframe">WIREFRAME</option><option value="glow">GLOW</option><option value="hologram">HOLOGRAM</option></select></div>
+</div>
+<div class="three-lab-stage" id="three-lab-stage">
+  <canvas id="model-canvas" aria-label="Interactive 3D model viewport"></canvas>
+  <div class="three-lab-empty" id="model-empty"><span>3D VIEWPORT</span><small>LOAD A .GLB MODEL TO BEGIN</small></div>
+  <div class="three-lab-stage-meta"><span id="model-status">WAITING FOR MODEL</span><span>DRAG · ROTATE / SCROLL · ZOOM</span></div>
+</div>
+<div class="three-lab-controls">
+  <div class="three-lab-control"><label for="model-background">BACKGROUND</label><input id="model-background" type="color" value="#e9e8e4"></div>
+  <label class="three-lab-check"><input id="model-auto-rotate" type="checkbox"> AUTO ROTATE</label>
+  <button class="small-action" id="model-reset">RESET VIEW</button>
+  <div class="three-lab-export">
+    <label for="model-export-size">SIZE</label><select id="model-export-size"><option value="1920">1080P</option><option value="2560">2K</option></select>
+    <label for="model-export-duration">DURATION</label><select id="model-export-duration"><option value="5">5 SEC</option><option value="10" selected>10 SEC</option><option value="20">20 SEC</option></select>
+    <button class="small-action" id="model-export">RECORD VIDEO ↗</button>
+  </div>
+</div>
+<p class="three-lab-note">GLB · REALTIME MATERIAL PREVIEW · MP4 WHEN SUPPORTED, OTHERWISE WEBM</p>
+</section>
+</main><footer>YS665VS</footer></div>
 <script type="module">
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
 import JSZip from "https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm";
-const $=id=>document.getElementById(id);let items=[],active=0,drag=null;function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id))}$('open').onclick=()=>{show('carousel-view');setRatio(ratio.value)};$('template').onclick=()=>{show('carousel-view');setRatio(ratio.value)};$('crumb-home').onclick=$('crumb-home-2').onclick=()=>show('home');$('add').onclick=()=>$('files').click();$('files').onchange=async e=>{await importAssets(e.target.files,false);e.target.value=''};
+import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
+const $=id=>document.getElementById(id);
+
+/* Independent 3D model viewport */
+let modelRenderer=null,modelScene=null,modelCamera=null,modelRoot=null,modelLoader=null,modelFrame=0,modelPointer=null,modelUrl=null,modelOriginalMaterials=[];
+let modelExporting=false;
+function initModelViewport(){
+ if(modelRenderer)return;
+ const canvas=$('model-canvas');
+ modelScene=new THREE.Scene();
+ modelScene.background=new THREE.Color($('model-background').value);
+ modelCamera=new THREE.PerspectiveCamera(36,1,.1,1000);
+ modelCamera.position.set(0,0,5.5);
+ modelRenderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,preserveDrawingBuffer:false,powerPreference:'high-performance'});
+ modelRenderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+ modelRenderer.outputColorSpace=THREE.SRGBColorSpace;
+ modelRenderer.toneMapping=THREE.ACESFilmicToneMapping;
+ modelRenderer.toneMappingExposure=1.15;
+ modelScene.add(new THREE.HemisphereLight(0xffffff,0x777783,2.1));
+ const key=new THREE.DirectionalLight(0xffffff,2.2);key.position.set(-4,6,8);modelScene.add(key);
+ const fill=new THREE.DirectionalLight(0xb9d8ff,.8);fill.position.set(5,1,-5);modelScene.add(fill);
+ modelLoader=new GLTFLoader();
+ resizeModelViewport();
+ const render=()=>{
+  modelFrame=requestAnimationFrame(render);
+  if(modelRoot&&$('model-auto-rotate').checked&&!modelExporting)modelRoot.rotation.y+=.004;
+  modelRenderer.render(modelScene,modelCamera);
+ };
+ render();
+}
+function resizeModelViewport(){
+ if(!modelRenderer)return;
+ const r=$('three-lab-stage').getBoundingClientRect();
+ const w=Math.max(1,Math.floor(r.width)),h=Math.max(1,Math.floor(r.height));
+ modelRenderer.setSize(w,h,false);modelCamera.aspect=w/h;modelCamera.updateProjectionMatrix();
+}
+function disposeModel(){
+ if(!modelRoot)return;
+ modelScene.remove(modelRoot);
+ modelRoot.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){const mats=Array.isArray(o.material)?o.material:[o.material];mats.forEach(m=>{if(m.map&&m.map!==undefined){};m.dispose()})}});
+ modelRoot=null;modelOriginalMaterials=[];
+}
+function fitModel(root){
+ const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
+ root.position.sub(center);
+ const max=Math.max(size.x,size.y,size.z)||1;root.scale.setScalar(3.25/max);
+ modelCamera.position.set(0,0,5.5);modelCamera.near=.01;modelCamera.far=1000;modelCamera.updateProjectionMatrix();
+}
+function applyModelEffect(effect){
+ if(!modelRoot)return;
+ modelRoot.traverse(o=>{
+  if(!o.isMesh)return;
+  const originals=o.userData.originalMaterials;
+  if(!originals)return;
+  const make=(m)=>{const mat=m.clone();
+   if(effect==='clay'){mat.color.set('#a7a7a2');mat.metalness=0;mat.roughness=1;if('map'in mat)mat.map=null;}
+   else if(effect==='wireframe'){mat.wireframe=true;mat.transparent=false;mat.opacity=1;}
+   else if(effect==='glow'){if(mat.emissive){mat.emissive.set('#78cfff');mat.emissiveIntensity=1.6;}else{mat.color.set('#9bdcff');}mat.metalness=.15;mat.roughness=.25;}
+   else if(effect==='hologram'){mat.color.set('#65dfff');mat.wireframe=true;mat.transparent=true;mat.opacity=.58;mat.depthWrite=false;mat.side=THREE.DoubleSide;mat.blending=THREE.AdditiveBlending;}
+   return mat;
+  };
+  const old=o.material,arr=Array.isArray(old)?old:[old];arr.forEach(m=>m.dispose());
+  o.material=effect==='original'?originals.map(m=>m.clone()):(Array.isArray(originals)?originals.map(make):make(originals));
+ });
+}
+async function loadModelFile(file){
+ if(!file)return;
+ if(!file.name.toLowerCase().endsWith('.glb')){alert('For now, please use a single-file .GLB model.');return;}
+ initModelViewport();$('model-status').textContent='LOADING MODEL…';$('model-name').textContent=file.name;
+ if(modelUrl)URL.revokeObjectURL(modelUrl);
+ modelUrl=URL.createObjectURL(file);
+ try{
+  const gltf=await modelLoader.loadAsync(modelUrl);
+  disposeModel();modelRoot=gltf.scene;fitModel(modelRoot);
+  modelOriginalMaterials=[];
+  modelRoot.traverse(o=>{if(o.isMesh){const originals=Array.isArray(o.material)?o.material.map(m=>m.clone()):o.material.clone();o.userData.originalMaterials=originals;modelOriginalMaterials.push(o);o.castShadow=true;o.frustumCulled=false;}});
+  modelScene.add(modelRoot);applyModelEffect($('model-effect').value);
+  $('three-lab-stage').classList.add('has-model');$('model-status').textContent='MODEL READY · '+modelOriginalMaterials.length+' MESHES';
+ }catch(err){console.error(err);$('model-status').textContent='MODEL LOAD FAILED';alert('Could not load this GLB model. Check that the file is valid.');}
+}
+$('open-3d').onclick=()=>{show('three-lab-view');initModelViewport();resizeModelViewport()};
+$('three-home').onclick=()=>show('home');
+$('model-upload').onclick=()=>$('model-file').click();
+$('model-file').onchange=e=>{loadModelFile(e.target.files?.[0]);e.target.value=''};
+$('model-effect').onchange=e=>applyModelEffect(e.target.value);
+$('model-background').oninput=e=>{const c=new THREE.Color(e.target.value);if(modelScene)modelScene.background=c;$('three-lab-stage').style.background=e.target.value};
+$('model-reset').onclick=()=>{if(modelRoot){modelRoot.rotation.set(0,0,0);fitModel(modelRoot)}};
+$('model-canvas').addEventListener('pointerdown',e=>{if(!modelRoot||e.button!==0)return;modelPointer={x:e.clientX,y:e.clientY};$('model-canvas').setPointerCapture(e.pointerId)});
+$('model-canvas').addEventListener('pointermove',e=>{if(!modelPointer||!modelRoot)return;const dx=e.clientX-modelPointer.x,dy=e.clientY-modelPointer.y;modelRoot.rotation.y+=dx*.008;modelRoot.rotation.x+=dy*.008;modelPointer={x:e.clientX,y:e.clientY}});
+['pointerup','pointercancel','lostpointercapture'].forEach(t=>$('model-canvas').addEventListener(t,()=>modelPointer=null));
+$('model-canvas').addEventListener('wheel',e=>{if(!modelRoot)return;e.preventDefault();modelCamera.position.z=Math.max(1.8,Math.min(18,modelCamera.position.z+e.deltaY*.008));},{passive:false});
+window.addEventListener('resize',resizeModelViewport);
+$('model-export').onclick=async()=>{
+ if(!modelRoot){alert('Load a GLB model before recording.');return;}
+ if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){alert('Video recording is not supported in this browser.');return;}
+ const btn=$('model-export'),duration=Number($('model-export-duration').value)||10,longEdge=Number($('model-export-size').value)||1920;
+ const r=$('three-lab-stage').getBoundingClientRect(),aspect=r.width/Math.max(1,r.height),w=aspect>=1?longEdge:Math.round(longEdge*aspect),h=aspect>=1?Math.round(longEdge/aspect):longEdge;
+ const oldSize=modelRenderer.getSize(new THREE.Vector2()),oldPixel=modelRenderer.getPixelRatio(),oldAspect=modelCamera.aspect,oldAuto=$('model-auto-rotate').checked;
+ const bg=$('model-background').value;
+ let stream=null,recorder=null,startedAt=0,raf=0,started=false;
+ try{
+  modelExporting=true;modelRenderer.setPixelRatio(1);modelRenderer.setSize(w,h,false);modelCamera.aspect=w/h;modelCamera.updateProjectionMatrix();modelScene.background=new THREE.Color(bg);modelRenderer.render(modelScene,modelCamera);
+  stream=$('model-canvas').captureStream(30);
+  const candidates=['video/mp4;codecs=avc1.42E01E','video/mp4','video/webm;codecs=vp9','video/webm'];
+  const mime=candidates.find(x=>MediaRecorder.isTypeSupported(x));if(!mime)throw new Error('This browser cannot record MP4 or WebM. Try another browser.');
+  recorder=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:16000000});const chunks=[];
+  recorder.ondataavailable=e=>{if(e.data?.size)chunks.push(e.data)};
+  recorder.onstop=()=>{const blob=new Blob(chunks,{type:mime}),url=URL.createObjectURL(blob),a=document.createElement('a'),mp4=mime.startsWith('video/mp4');a.href=url;a.download='YS665VS-3D-LAB-'+w+'x'+h+'.'+(mp4?'mp4':'webm');a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);stream?.getTracks().forEach(t=>t.stop());modelRenderer.setPixelRatio(oldPixel);modelRenderer.setSize(oldSize.x,oldSize.y,false);modelCamera.aspect=oldAspect;modelCamera.updateProjectionMatrix();modelExporting=false;btn.disabled=false;btn.textContent='RECORD VIDEO ↗';};
+  btn.disabled=true;btn.textContent='RECORDING 0%…';recorder.start(500);started=true;startedAt=performance.now();
+  const tick=now=>{if(!started)return;if(oldAuto&&modelRoot)modelRoot.rotation.y+=.004;modelRenderer.render(modelScene,modelCamera);const pct=Math.min(100,Math.round((now-startedAt)/(duration*1000)*100));btn.textContent='RECORDING '+pct+'%…';if(now-startedAt>=duration*1000){started=false;cancelAnimationFrame(raf);recorder.stop();return;}raf=requestAnimationFrame(tick)};
+  raf=requestAnimationFrame(tick);
+ }catch(err){console.error(err);started=false;if(raf)cancelAnimationFrame(raf);if(recorder&&recorder.state!=='inactive')recorder.stop();if(stream)stream.getTracks().forEach(t=>t.stop());modelRenderer.setPixelRatio(oldPixel);modelRenderer.setSize(oldSize.x,oldSize.y,false);modelCamera.aspect=oldAspect;modelCamera.updateProjectionMatrix();modelExporting=false;btn.disabled=false;btn.textContent='RECORD VIDEO ↗';alert(err.message||'Video export failed.');}
+};
+
+let items=[],active=0,drag=null;function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id))}$('open').onclick=()=>{show('carousel-view');setRatio(ratio.value)};$('template').onclick=()=>{show('carousel-view');setRatio(ratio.value)};$('crumb-home').onclick=$('crumb-home-2').onclick=()=>show('home');$('add').onclick=()=>$('files').click();$('files').onchange=async e=>{await importAssets(e.target.files,false);e.target.value=''};
 let imageMode='square',draggedIndex=null,pointerDrag=null,stagePointer=null,suppressSlideClick=false;
 let threeRenderer=null,threeScene=null,threeCamera=null,threeGroup=null,threeMeshes=[],threeTextures=[],threeAnimatedTextures=[],threeReady=false,threeGeneration=0,carouselMode="coverflow",lastAnimationTime=0;
 const threeCanvas=$('three-stage'),captionCanvas=$('caption-stage');
