@@ -136,7 +136,7 @@ header h1 span:last-child{display:none!important}
 <section id="three-lab-view" class="view">
 <nav class="path" aria-label="Путь"><button id="three-home">MOTION LIBRARY</button><span class="sep">/</span><button class="current" disabled>3D LAB / VIEWPORT</button></nav>
 <div class="template-header"><div><div class="editorial-meta">MODEL WORKSPACE / 005</div><h2 class="template-title">3D LAB</h2><p class="template-subtitle">Import a model. Shape the look. Record the motion.</p></div><div class="template-code">REALTIME<br>3D / VIDEO</div></div>
-<div class="three-lab-tabs" role="tablist" aria-label="3D Lab workspace"><button class="three-lab-tab active" id="scene-tab" type="button" role="tab" aria-selected="true">01 / SCENE COMPOSER</button><button class="three-lab-tab" id="model-tab" type="button" role="tab" aria-selected="false">02 / MODEL FX</button></div>
+<div class="three-lab-tabs" role="tablist" aria-label="3D Lab workspace"><button class="three-lab-tab active" id="model-tab" type="button" role="tab" aria-selected="true">01 / MODEL FX</button><button class="three-lab-tab" id="scene-tab" type="button" role="tab" aria-selected="false">02 / SCENE COMPOSER</button></div>
 <div id="scene-workspace">
 <div class="scene-toolbar"><div class="scene-actions"><span class="three-lab-label">ADD OBJECT</span><button class="small-action" data-scene-add="box">+ CUBE</button><button class="small-action" data-scene-add="sphere">+ SPHERE</button><button class="small-action" data-scene-add="torus">+ TORUS</button><button class="small-action" data-scene-add="cone">+ CONE</button><button class="small-action" id="scene-add-text">+ TYPE</button><button class="small-action" id="scene-add-image">+ IMAGE</button><input id="scene-image-file" type="file" accept="image/*" hidden></div><div class="scene-actions"><div class="scene-studio-switch"><button data-scene-studio="light" class="active">LIGHT</button><button data-scene-studio="dark">DARK</button></div><button class="small-action" id="scene-reset">RESET SCENE</button><button class="small-action" id="scene-export">SAVE PNG ↗</button></div></div>
 <div class="scene-stage" id="scene-stage" data-studio="light"><canvas id="scene-canvas" aria-label="3D scene composer viewport"></canvas><div class="scene-stage-hint">DRAG EMPTY SPACE / ORBIT · DRAG OBJECT / ROTATE · SCROLL / ZOOM</div></div>
@@ -327,7 +327,7 @@ async function loadModelFile(file){
   $('three-lab-stage').classList.add('has-model');$('model-empty').style.display='none';$('model-name').textContent=file.name+' · '+modelOriginalMaterials.length+' MESHES';
  }catch(err){console.error(err);$('model-empty').style.display='flex';$('model-empty').innerHTML='<span>LOAD FAILED</span><small>CHECK THE GLB FILE</small>';$('model-name').textContent='LOAD FAILED · '+file.name;alert('Could not load this GLB model. Check that the file is valid.');}
 }
-$('open-3d').onclick=()=>{show('three-lab-view');setThreeLabTab('scene')};
+$('open-3d').onclick=()=>{show('three-lab-view');setThreeLabTab('model')};
 $('scene-tab').onclick=()=>setThreeLabTab('scene');$('model-tab').onclick=()=>setThreeLabTab('model');
 document.querySelectorAll('[data-scene-add]').forEach(b=>b.onclick=()=>sceneAddPrimitive(b.dataset.sceneAdd));
 $('scene-add-text').onclick=sceneAddText;$('scene-add-image').onclick=()=>$('scene-image-file').click();$('scene-image-file').onchange=e=>{sceneAddImage(e.target.files?.[0]);e.target.value=''};
